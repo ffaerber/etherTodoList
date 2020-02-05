@@ -76,23 +76,23 @@ export default function TodoList(props) {
 
 
 
-  // function contractSet() {
-  //   if(contract){
-  //     contract.methods
-  //       .set(name)
-  //       .send({ from: accounts[0] }, (err, result) => {
-  //         console.log(result)
-  //       })
-  //   }
-  // }
+  function createList() {
+    if(contract){
+      contract.methods
+        .createList(name)
+        .send({ from: accounts[0] }, (err, result) => {
+          console.log(result)
+        })
+    }
+  }
 
 
 
 
-  // const handleSubmit = (evt) => {
-  //   evt.preventDefault();
-  //   contractSet(name)
-  // }
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    createList(name)
+  }
 
   const [name, setName] = useState("");
 
@@ -101,10 +101,9 @@ export default function TodoList(props) {
       <div >
         <div>Network: {networkId ? `${networkId} – ${networkName}` : 'No connection'}</div>
 
-
-        {/* <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <label>
-            number:
+            List Name:
           <input
             type="text"
             value={name}
@@ -112,7 +111,7 @@ export default function TodoList(props) {
           />
           </label>
           <input type="submit" value="Submit" />
-        </form> */}
+        </form>
 
         <ul>
           {listIds.map(function(item) {
