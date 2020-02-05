@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useWeb3Injected, useWeb3Network } from '@openzeppelin/network/react';
 
-import TodoList from './components/TodoList/index.js';
+import EtherTodoList from './components/EtherTodoList/index.js';
 
 import styles from './App.module.scss';
 
@@ -20,7 +20,7 @@ function App() {
     <>
       <h1>OpenZeppelin Starter Kit</h1>
       <div className={styles.App}>
-        <TodoList web3={injected} />
+        <EtherTodoList web3={injected} />
 
         {/* {injected && <Web3Info title="Wallet Web3" web3Context={injected} />}
         {isHttp && <Web3Info title="Local Web3 Node" web3Context={local} />}

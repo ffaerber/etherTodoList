@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { PublicAddress, Button } from 'rimble-ui';
-import styles from './TodoList.module.scss';
+import styles from './EtherTodoList.module.scss';
 
 import { solidityLoaderOptions } from '../../../config/webpack';
 
-export default function TodoList(props) {
+export default function EtherTodoList(props) {
   const hotLoaderDisabled = solidityLoaderOptions.disabled;
   const { web3 } = props;
   const { accounts, networkId, networkName, providerName, lib, connected } = props.web3;
