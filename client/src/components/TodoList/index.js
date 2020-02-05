@@ -62,16 +62,16 @@ export default function TodoList(props) {
 
 
 
-  // async function getListIds() {
-  //   if(contract){
-  //     const response = await contract.methods.getListIds().call();
-  //     setListIds(response)
-  //   }
-  // }
-  // const [listIds, setListIds] = useState();
-  // useEffect(() => {
-  //   callListIds()
-  // }, [contract]);
+  async function getListIds() {
+    if(contract){
+      const response = await contract.methods.getListIds(1,5).call();
+      setListIds(response)
+    }
+  }
+  const [listIds, setListIds] = useState([]);
+  useEffect(() => {
+    getListIds()
+  }, [contract]);
 
 
 
@@ -96,6 +96,7 @@ export default function TodoList(props) {
 
   const [name, setName] = useState("");
 
+
   return (
       <div >
         <div>Network: {networkId ? `${networkId} – ${networkName}` : 'No connection'}</div>
@@ -113,7 +114,13 @@ export default function TodoList(props) {
           <input type="submit" value="Submit" />
         </form> */}
 
-        {totalLists}
+        <ul>
+          {listIds.map(function(item) {
+            return <li key={item}>{item}</li>;
+          })}
+        </ul>
+
+
       </div>
   )
 
