@@ -1,23 +1,14 @@
 import React from 'react';
 import MyContext from './MyContext';
+import * as actions from './MyActions';
 import { useWeb3Injected, useWeb3Network } from '@openzeppelin/network/react';
-
 
 const initialState = {
   totalLists: 0,
-  listIds: [],
-  list: []
+  lists: []
 };
 
-const actions = {
-  INIT: "INIT",
-  SET_TOTAL_LISTS: "SET_TOTAL_LISTS",
-  SET_LIST_IDS: "SET_LIST_IDS",
-  SET_LIST: "SET_LIST"
-};
-
-
-function reducer(state, action) {
+const reducer = (state, action) => {
   switch (action.type) {
 
     case actions.INIT:
@@ -26,14 +17,16 @@ function reducer(state, action) {
     case actions.SET_TOTAL_LISTS:
       return { ...state, totalLists: action.payload };
 
-    case actions.SET_LIST_IDS:
-      return {
-        ...state,
-        listIds: action.payload.filter((value, index, arr) => value > 0)
-      }
+    case actions.SET_LISTS:
+      const listIds = action.payload.filter((value, index, arr) => value > 0)
+      const lists = listIds.map(id => {return {id: id}} )
+      return { ...state, lists: lists }
 
     case actions.SET_LIST:
-      return { ...state, listIds: action.payload };
+      const newList = action.payload
+      let newState = { ...state }
+      newState.lists = state.lists.map(oldList => oldList.id == newList.id? ({...oldList, ...newList}): oldList);
+      return newState
 
     default:
       return state;
@@ -83,7 +76,7 @@ export default function MyProvider({ children }) {
   const getListIds = async () => {
     if(state.contract){
       const listIds = await state.contract.methods.getListIds(1,10).call();
-      dispatch({ type: actions.SET_LIST_IDS, payload: listIds})
+      dispatch({ type: actions.SET_LISTS, payload: listIds})
     }
   }
   React.useEffect(() => {
@@ -91,13 +84,13 @@ export default function MyProvider({ children }) {
   }, [state.contract]);
 
 
-  // const getList = async (listId) => {
-  //   if(state.contract){
-  //     const list = await state.contract.methods.getList(listId).call();
-  //     dispatch({ type: actions.SET_LIST, value })
 
-  //   }
-  // }
+  const getList = async (listId) => {
+    if(state.contract){
+      const list = await state.contract.methods.getList(listId).call();
+      dispatch({ type: actions.SET_LIST, payload: list })
+    }
+  }
 
   const createList = (name) => {
     if(state.contract){
@@ -110,8 +103,10 @@ export default function MyProvider({ children }) {
   }
 
   const value = {
+    dispatch: dispatch,
     totalLists: state.totalLists,
-    listIds: state.listIds,
+    lists: state.lists,
+    getList: getList,
     createList: value => {
       state.contract.methods
         .createList(value)

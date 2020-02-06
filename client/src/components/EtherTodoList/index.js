@@ -3,19 +3,20 @@ import { PublicAddress, Button } from 'rimble-ui';
 import styles from './EtherTodoList.module.scss';
 import { solidityLoaderOptions } from '../../../config/webpack';
 import MyContext from '../../MyContext';
+import TodoList from '../TodoList';
+
 
 export default function EtherTodoList() {
-  const { totalLists, listIds, createList } = React.useContext(MyContext);
+  const {getList, totalLists, lists, createList } = React.useContext(MyContext);
 
   const hotLoaderDisabled = solidityLoaderOptions.disabled;
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    createList(name)
+    createList(listName)
   }
 
-  const [name, setName] = useState("");
-
+  const [listName, setListName] = useState("");
 
   return (
       <div >
@@ -26,17 +27,15 @@ export default function EtherTodoList() {
             List Name:
           <input
             type="text"
-            value={name}
-            onChange={e => setName(e.target.value)}
+            value={listName}
+            onChange={e => setListName(e.target.value)}
           />
           </label>
           <input type="submit" value="Submit" />
         </form>
 
         <ul>
-          {listIds.map(function(item) {
-            return <li key={item}>{item}</li>;
-          })}
+          { lists.map(list => <TodoList list={list} getList={getList}/> ) }
         </ul>
 
 
