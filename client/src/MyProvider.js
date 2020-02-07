@@ -40,24 +40,25 @@ export default function MyProvider({ children }) {
   const web3Context = useWeb3Injected();
   const { accounts, networkId, networkName, providerName, lib, connected } = web3Context;
 
-  React.useEffect(() => {
+
+  const fetchContract = async () => {
     let TodoList = {};
     let deployedNetwork = null;
-    const fetchContract = async () => {
-      try {
-        TodoList = require('../../contracts/TodoList.sol');
-      } catch (e) {
-        console.log(e);
-      }
-      const networkId = await web3Context.lib.eth.net.getId();
-      if(TodoList.networks){
-        deployedNetwork = TodoList.networks[networkId.toString()];
-        if (deployedNetwork) {
-          const todoList = new web3Context.lib.eth.Contract(TodoList.abi, deployedNetwork && deployedNetwork.address);
-          dispatch({ type: actions.INIT, payload: todoList})
-        }
+    try {
+      TodoList = require('../../contracts/TodoList.sol');
+    } catch (e) {
+      console.log(e);
+    }
+    const networkId = await web3Context.lib.eth.net.getId();
+    if(TodoList.networks){
+      deployedNetwork = TodoList.networks[networkId.toString()];
+      if (deployedNetwork) {
+        const todoList = new web3Context.lib.eth.Contract(TodoList.abi, deployedNetwork && deployedNetwork.address);
+        dispatch({ type: actions.INIT, payload: todoList})
       }
     }
+  }
+  React.useEffect(() => {
     fetchContract()
   }, []);
 

@@ -3,11 +3,19 @@ import { PublicAddress, Button } from 'rimble-ui';
 import styles from './EtherTodoList.module.scss';
 import { solidityLoaderOptions } from '../../../config/webpack';
 import MyContext from '../../MyContext';
-import TodoList from '../TodoList';
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams
+} from "react-router-dom";
 
 export default function EtherTodoList() {
-  const {getList, totalLists, lists, createList } = React.useContext(MyContext);
+  const {contract, getList, totalLists, lists, createList } = React.useContext(MyContext);
+  let match = useRouteMatch();
 
   const hotLoaderDisabled = solidityLoaderOptions.disabled;
 
@@ -20,6 +28,7 @@ export default function EtherTodoList() {
 
   return (
       <div >
+        <h1>TodoList</h1>
         <div>{totalLists}</div>
 
         <form onSubmit={handleSubmit}>
@@ -34,12 +43,42 @@ export default function EtherTodoList() {
           <input type="submit" value="Submit" />
         </form>
 
-        <ul>
-          { lists.map(list => <TodoList list={list} getList={getList}/> ) }
-        </ul>
 
-
+        <Switch>
+          <Route path={`${match.path}/:listId`}>
+            <List getList={getList}/>
+          </Route>
+          <Route path={match.path}>
+            <ul>{ lists.map(list => <TodoList list={list} getList={getList}/> ) }</ul>
+          </Route>
+        </Switch>
       </div>
+  )
+}
+
+function List({getList}) {
+  const { listId } = useParams();
+
+  return (
+    <h3>Requested list ID: {listId}</h3>
+  )
+}
+
+
+function TodoList({list, getList}) {
+  const match = useRouteMatch();
+  const {id, name} = list
+
+  React.useEffect(() => {
+    getList(id)
+  }, []);
+
+  return (
+    <li key={id}>
+      <Link to={`${match.url}/${id}`}>
+        {id}-{name}
+      </Link>
+    </li>
   )
 
 }
