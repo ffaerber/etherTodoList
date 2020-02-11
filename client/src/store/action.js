@@ -28,7 +28,15 @@ export const useActions = (state, dispatch) => ({
     if(state.contract){
       dispatch({ type: types.LOAD_LIST, payload: {state, id} })
     }
+  },
+
+  createList: (name) => {
+    if(state.contract){
+      dispatch({ type: types.CREATE_LIST, payload: {state, name} })
+    }
   }
+
+
 
 
 })

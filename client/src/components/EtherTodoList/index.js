@@ -37,7 +37,7 @@ export default function EtherTodoList() {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    //createList(listName)
+    actions.createList(listName)
   }
 
   const [listName, setListName] = useState("");

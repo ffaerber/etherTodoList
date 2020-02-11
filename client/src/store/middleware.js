@@ -65,6 +65,22 @@ export const applyMiddleware = dispatch => async action =>  {
       break
     }
 
+    case types.CREATE_LIST: {
+      const {state, name} = action.payload
+      const {accounts} = state.web3Context
+
+      state.contract.methods
+        .createList(name)
+        .send({ from: accounts[0] }, (err, result) => {
+          console.log(result)
+          dispatch({ type: types.CREATE_LIST_SUCCESS, result })
+        })
+
+      return accounts
+      break
+    }
+
+
 
     default: dispatch(action)
 } }
