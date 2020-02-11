@@ -7,7 +7,6 @@ import {
   Link
 } from "react-router-dom";
 
-import Web3Info from './components/Web3Info/index.js';
 import EtherTodoList from './components/EtherTodoList/index.js';
 import styles from './App.module.scss';
 
