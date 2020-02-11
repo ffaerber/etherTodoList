@@ -10,12 +10,12 @@ import {
 import Web3Info from './components/Web3Info/index.js';
 import EtherTodoList from './components/EtherTodoList/index.js';
 import styles from './App.module.scss';
-import MyProvider from './MyProvider';
+
+import {MyProvider} from './store/store';
 
 const App = props => {
 
   return (
-
       <Router>
         <MyProvider>
           <h1>OpenZeppelin Starter Kit</h1>

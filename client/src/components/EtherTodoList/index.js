@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react'
 import { PublicAddress, Button } from 'rimble-ui';
 import styles from './EtherTodoList.module.scss';
-import { solidityLoaderOptions } from '../../../config/webpack';
-import MyContext from '../../MyContext';
+import { MyContext} from '../../store/store'
 
 import {
   BrowserRouter as Router,
@@ -14,14 +13,31 @@ import {
 } from "react-router-dom";
 
 export default function EtherTodoList() {
-  const {contract, getList, totalLists, lists, createList } = React.useContext(MyContext);
+  const { state, actions } = useContext(MyContext)
+
   let match = useRouteMatch();
 
-  const hotLoaderDisabled = solidityLoaderOptions.disabled;
+  useEffect(() => {
+    actions.injectWeb3()
+  }, [])
+
+  useEffect(() => {
+    actions.loadContract()
+  }, [state.web3Context])
+
+  useEffect(() => {
+    actions.loadTotalLists()
+  }, [state.contract])
+
+  useEffect(() => {
+    actions.loadListIds()
+  }, [state.contract])
+
+
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    createList(listName)
+    //createList(listName)
   }
 
   const [listName, setListName] = useState("");
@@ -29,7 +45,7 @@ export default function EtherTodoList() {
   return (
       <div >
         <h1>TodoList</h1>
-        <div>{totalLists}</div>
+        <div>{state.totalLists}</div>
 
         <form onSubmit={handleSubmit}>
           <label>
@@ -46,17 +62,17 @@ export default function EtherTodoList() {
 
         <Switch>
           <Route path={`${match.path}/:listId`}>
-            <List getList={getList}/>
+            <List/>
           </Route>
           <Route path={match.path}>
-            <ul>{ lists.map(list => <TodoList list={list} getList={getList}/> ) }</ul>
+            <ul>{ state.lists.map(list => <TodoList list={list}/> ) }</ul>
           </Route>
         </Switch>
       </div>
   )
 }
 
-function List({getList}) {
+function List() {
   const { listId } = useParams();
 
   return (
@@ -65,18 +81,19 @@ function List({getList}) {
 }
 
 
-function TodoList({list, getList}) {
+function TodoList({list}) {
+  const { actions } = useContext(MyContext)
   const match = useRouteMatch();
   const {id, name} = list
 
-  React.useEffect(() => {
-    getList(id)
+  useEffect(() => {
+    actions.loadListById(id)
   }, []);
 
   return (
     <li key={id}>
       <Link to={`${match.url}/${id}`}>
-        {id}-{name}
+        {name}
       </Link>
     </li>
   )
