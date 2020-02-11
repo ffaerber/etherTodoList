@@ -71,9 +71,8 @@ export const applyMiddleware = dispatch => async action =>  {
 
       state.contract.methods
         .createList(name)
-        .send({ from: accounts[0] }, (err, result) => {
-          console.log(result)
-          dispatch({ type: types.CREATE_LIST_SUCCESS, result })
+        .send({ from: accounts[0] }, (err, tx) => {
+          dispatch({ type: types.CREATE_LIST_SUCCESS, tx })
         })
 
       return accounts
