@@ -1,7 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { Flex, Box, Table} from 'rimble-ui';
 import { PublicAddress, Button } from 'rimble-ui';
 import styles from './EtherTodoList.module.scss';
-import { MyContext} from '../../store/store'
+import { MyContext } from '../../store/store'
+import NewTodoList from './NewTodoList'
+import TodoListDetails from './TodoListDetails'
+import TodoListItem from './TodoListItem'
 
 import {
   BrowserRouter as Router,
@@ -17,8 +21,9 @@ export default function EtherTodoList() {
 
   let match = useRouteMatch();
 
+
   useEffect(() => {
-    actions.injectWeb3()
+    actions.loadWeb3()
   }, [])
 
   useEffect(() => {
@@ -26,76 +31,39 @@ export default function EtherTodoList() {
   }, [state.web3Context])
 
   useEffect(() => {
-    actions.loadTotalLists()
+    actions.callTotalLists()
   }, [state.contract])
 
   useEffect(() => {
-    actions.loadListIds()
+    actions.callListIds()
   }, [state.contract])
 
 
 
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    actions.createList(listName)
-  }
-
-  const [listName, setListName] = useState("");
-
   return (
       <div >
-        <h1>TodoList</h1>
-        <div>{state.totalLists}</div>
+        <Flex>
 
-        <form onSubmit={handleSubmit}>
-          <label>
-            List Name:
-          <input
-            type="text"
-            value={listName}
-            onChange={e => setListName(e.target.value)}
-          />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
-
-
-        <Switch>
-          <Route path={`${match.path}/:listId`}>
-            <List/>
-          </Route>
           <Route path={match.path}>
-            <ul>{ state.lists.map(list => <TodoList list={list}/> ) }</ul>
+            <Box width={1/4} bg="#f2f2f2">
+              <ul>{ state.lists.map(list => <TodoListItem list={list}/> ) }</ul>
+              <NewTodoList/>
+            </Box>
           </Route>
-        </Switch>
+
+
+          <Switch>
+
+            <Route path={`${match.path}/:listId`}>
+              <Box width={3/4} >
+                <TodoListDetails/>
+              </Box>
+            </Route>
+
+          </Switch>
+
+        </Flex>
       </div>
   )
 }
 
-function List() {
-  const { listId } = useParams();
-
-  return (
-    <h3>Requested list ID: {listId}</h3>
-  )
-}
-
-
-function TodoList({list}) {
-  const { actions } = useContext(MyContext)
-  const match = useRouteMatch();
-  const {id, name} = list
-
-  useEffect(() => {
-    actions.loadListById(id)
-  }, []);
-
-  return (
-    <li key={id}>
-      <Link to={`${match.url}/${id}`}>
-        {name}
-      </Link>
-    </li>
-  )
-
-}

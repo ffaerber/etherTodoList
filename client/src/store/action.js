@@ -2,8 +2,10 @@ import types from './actionTypes'
 
 export const useActions = (state, dispatch) => ({
 
-  injectWeb3: () => {
-    dispatch({ type: types.INJECT_WEB3 })
+
+
+  loadWeb3: () => {
+    dispatch({ type: types.LOAD_WEB3 })
   },
 
   loadContract: () => {
@@ -12,31 +14,33 @@ export const useActions = (state, dispatch) => ({
     }
   },
 
-  loadTotalLists: () => {
+
+
+
+  callTotalLists: () => {
     if(state.contract){
-      dispatch({ type: types.LOAD_TOTAL_LISTS, payload: {state} })
+      dispatch({ type: types.CALL_TOTAL_LISTS, payload: {state} })
     }
   },
 
-  loadListIds: () => {
+  callListIds: () => {
     if(state.contract){
-      dispatch({ type: types.LOAD_LIST_IDS, payload: {state} })
+      dispatch({ type: types.CALL_LIST_IDS, payload: {state} })
     }
   },
 
-  loadListById: (id) => {
+  callList: (id) => {
     if(state.contract){
-      dispatch({ type: types.LOAD_LIST, payload: {state, id} })
+      dispatch({ type: types.CALL_LIST, payload: {state, id} })
     }
   },
 
-  createList: (name) => {
+
+
+  sendCreateList: (name) => {
     if(state.contract){
-      dispatch({ type: types.CREATE_LIST, payload: {state, name} })
+      dispatch({ type: types.SEND_CREATE_LIST, payload: {state, name} })
     }
   }
-
-
-
 
 })

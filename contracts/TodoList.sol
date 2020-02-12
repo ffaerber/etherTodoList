@@ -30,6 +30,8 @@ contract TodoList {
     uint256[] listIds;
     mapping(uint256 => List) lists;
 
+    event ListCreated(uint256 listId);
+
     function initialize(address _owner) public {
         dapp_owner = _owner;
     }
@@ -50,6 +52,7 @@ contract TodoList {
             exists: true
         });
         listIds.push(listId);
+        emit ListCreated(listId);
         lists[listId] = newList;
         totalLists++;
     }

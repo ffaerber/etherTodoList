@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Flex, Box, Table, ToastMessage, Button} from 'rimble-ui';
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,27 +17,27 @@ const App = props => {
   return (
       <Router>
         <MyProvider>
-          <h1>OpenZeppelin Starter Kit</h1>
 
-          <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/todolist">todolist</Link>
-            </li>
-          </ul>
-        </nav>
+              {/* <nav>
+                <ul>
+                  <li>
+                    <Link to="/">Home</Link>
+                  </li>
+                  <li>
+                    <Link to="/todolist">todolist</Link>
+                  </li>
+                </ul>
+              </nav> */}
 
-        <Switch>
-          <Route path="/todolist">
-            <EtherTodoList/>
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
+              <Switch>
+                <Route path="/todolist">
+                  <EtherTodoList/>
+                </Route>
+                <Route path="/">
+                  <Home />
+                </Route>
+              </Switch>
+
 
         </MyProvider>
       </Router>

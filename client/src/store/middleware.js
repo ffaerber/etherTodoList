@@ -9,16 +9,16 @@ export const applyMiddleware = dispatch => async action =>  {
 
   switch (action.type) {
 
-    case types.INJECT_WEB3: {
+    case types.LOAD_WEB3: {
       return await fromInjected()
         .then(web3Context => dispatch({
-          type: types.INJECT_WEB3_SUCCESS,
+          type: types.LOAD_WEB3_SUCCESS,
           payload: web3Context }))
         .catch(err => dispatch({
-          type: types.INJECT_WEB3_FAIL,
+          type: types.LOAD_WEB3_FAIL,
           payload: err }))
           break
-        }
+    }
 
     case types.LOAD_CONTRACT: {
       const {state} = action.payload
@@ -34,6 +34,11 @@ export const applyMiddleware = dispatch => async action =>  {
         deployedNetwork = TodoList.networks[networkId.toString()];
         if (deployedNetwork) {
           const contract = new state.web3Context.lib.eth.Contract(TodoList.abi, deployedNetwork && deployedNetwork.address);
+          contract.events.allEvents({}, (error, event) => {
+            switch (event.event) {
+              case "ListCreated": dispatch({ type: types.SEND_CREATE_LIST_SUCCESS, payload: event })
+            }
+          })
           dispatch({ type: types.LOAD_CONTRACT_SUCCESS, payload: contract})
           return contract
         }
@@ -41,7 +46,7 @@ export const applyMiddleware = dispatch => async action =>  {
       break
     }
 
-    case types.LOAD_TOTAL_LISTS: {
+    case types.CALL_TOTAL_LISTS: {
       const {state} = action.payload
       const totalLists = await state.contract.methods.getTotalLists().call();
       dispatch({ type: types.LOAD_TOTAL_LISTS_SUCCESS, payload: totalLists})
@@ -49,30 +54,45 @@ export const applyMiddleware = dispatch => async action =>  {
       break
     }
 
-    case types.LOAD_LIST_IDS: {
+    case types.CALL_LIST_IDS: {
       const {state} = action.payload
-      const listIds = await state.contract.methods.getListIds(1,10).call();
-      dispatch({ type: types.LOAD_LIST_IDS_SUCCESS, payload: listIds})
+      const listIds = await state.contract.methods.getListIds(1,50).call();
+      dispatch({ type: types.CALL_LIST_IDS_SUCCESS, payload: listIds})
       return listIds
       break
     }
 
-    case types.LOAD_LIST: {
+    case types.CALL_LIST: {
       const {state, id} = action.payload
       const list = await state.contract.methods.getList(id).call();
-      dispatch({ type: types.LOAD_LIST_SUCCESS, payload: list})
+      dispatch({ type: types.CALL_LIST_SUCCESS, payload: list})
       return list
       break
     }
 
-    case types.CREATE_LIST: {
+    case types.SEND_CREATE_LIST: {
       const {state, name} = action.payload
+      const {web3Context, contract, listTamplate} = state
+      const {accounts} = web3Context
+
+      contract.methods
+        .createList(name)
+        .send({ from: accounts[0] }, (err, tx) => {
+          dispatch({ type: types.SEND_CREATE_LIST_STARTED, payload: {tx} })
+        })
+      return accounts
+      break
+    }
+
+
+    case types.SEND_DELETE_LIST: {
+      const {state, id} = action.payload
       const {accounts} = state.web3Context
 
       state.contract.methods
-        .createList(name)
+        .deleteList(id)
         .send({ from: accounts[0] }, (err, tx) => {
-          dispatch({ type: types.CREATE_LIST_SUCCESS, tx })
+          dispatch({ type: types.SEND_DELETE_LIST_STARTED, payload: {tx} })
         })
 
       return accounts
