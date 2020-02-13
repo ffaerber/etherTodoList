@@ -31,6 +31,8 @@ contract TodoList {
     mapping(uint256 => List) lists;
 
     event ListCreated(uint256 listId);
+    event ListUpdatet(uint256 listId);
+    event ListDeleted(uint256 listId);
 
     function initialize(address _owner) public {
         dapp_owner = _owner;
@@ -130,6 +132,7 @@ contract TodoList {
         );
         require(Validate.title(newName), "newName is not valid");
         list.title = newName;
+        emit ListUpdatet(listId);
     }
 
     function deleteList(uint256 listId) external {
@@ -144,6 +147,7 @@ contract TodoList {
         }
         delete lists[listId];
         totalLists--;
+        emit ListDeleted(listId);
     }
 
     function createTodo(uint256 listId, string calldata title) external {

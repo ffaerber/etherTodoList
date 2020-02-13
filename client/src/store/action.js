@@ -41,6 +41,13 @@ export const useActions = (state, dispatch) => ({
     if(state.contract){
       dispatch({ type: types.SEND_CREATE_LIST, payload: {state, name} })
     }
+  },
+
+  sendDeleteList: (id) => {
+    if(state.contract){
+      dispatch({ type: types.SEND_DELETE_LIST, payload: {state, id} })
+    }
   }
+
 
 })

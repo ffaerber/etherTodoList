@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { Button } from 'rimble-ui';
 import { MyContext } from '../../store/store'
 
 import {
@@ -20,9 +21,15 @@ export default function TodoListItem({list}) {
     actions.callList(id)
   }, []);
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    actions.sendDeleteList(id)
+  }
+
   return (
     <li key={id}>
       <Link to={`${match.url}/${id}`}> {name} </Link>
+      <Button onClick={handleClick}>delete</Button>
     </li>
   )
 
