@@ -2,8 +2,6 @@ pragma solidity >=0.5.0;
 
 import {Validate} from "../libraries/Validate.sol";
 
-import "@openzeppelin/contracts/ownership/Ownable.sol";
-
 contract TodoList {
     address public dapp_owner;
 
