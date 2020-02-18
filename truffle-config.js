@@ -7,7 +7,7 @@ const INFURA_ID = process.env.INFURA_ID || 'd6760e62b67f4937ba1ea2691046f06d';
 
 const configNetwok = (network, networkId, path = "m/44'/60'/0'/0/", gas = 4465030, gasPrice = 1e10) => ({
   provider: () => new HDWalletProvider(
-    mnemonic, `https://${network}.infura.io/v3/${INFURA_ID}`, 
+    mnemonic, `https://${network}.infura.io/v3/${INFURA_ID}`,
         0, 1, true, path
     ),
   networkId,
@@ -29,4 +29,20 @@ module.exports = {
     rinkeby: configNetwok('rinkeby', 4),
     main: configNetwok('mainnet', 1),
   },
+
+
+  compilers: {
+    solc: {
+      version: "0.6.1",
+      docker: true,
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 200
+        },
+        evmVersion: "byzantium"
+      }
+    }
+  }
+
 };
