@@ -62,7 +62,7 @@ export const applyMiddleware = dispatch => async action =>  {
     case types.CALL_TOTAL_LISTS: {
       const {state} = action.payload
       const totalLists = await state.contract.methods.getTotalLists().call();
-      dispatch({ type: types.LOAD_TOTAL_LISTS_SUCCESS, payload: totalLists})
+      dispatch({ type: types.CALL_TOTAL_LISTS_SUCCESS, payload: totalLists})
       return totalLists
     }
 
