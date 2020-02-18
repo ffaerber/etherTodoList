@@ -14,10 +14,6 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
 
-    case types.SET_LIST_TAMPLATE:{
-      return { ...state, listTamplate: action.payload };
-    }
-
     case types.LOAD_WEB3_SUCCESS:{
       return { ...state, web3Context: action.payload };
     }
