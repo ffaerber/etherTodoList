@@ -23,7 +23,6 @@ import {
   useRouteMatch,
   useParams
 } from "react-router-dom";
-import MyModal from '../MyModal';
 
 export default function EtherTodoList() {
   const { state, actions } = useContext(MyContext)
