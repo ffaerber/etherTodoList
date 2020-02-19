@@ -1,10 +1,11 @@
-pragma solidity ^0.6.0;
+pragma solidity ^0.5.0;
 
 import {Validate} from "../libraries/Validate.sol";
 
-contract TodoList {
-    address public dapp_owner;
+import "@openzeppelin/upgrades/contracts/Initializable.sol";
+import "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol";
 
+contract TodoList is Initializable, Ownable {
     struct Todo {
         string title;
         bool active;
@@ -32,8 +33,8 @@ contract TodoList {
     event ListUpdatet(uint256 listId);
     event ListDeleted(uint256 listId);
 
-    function initialize(address _owner) public {
-        dapp_owner = _owner;
+    function initialize(address sender) public initializer {
+        Ownable.initialize(sender);
     }
 
     function createList(string calldata name) external {
@@ -125,7 +126,7 @@ contract TodoList {
         List storage list = lists[listId];
         require(list.exists, "List does not exist.");
         require(
-            list.owner == msg.sender || dapp_owner == msg.sender,
+            list.owner == msg.sender || owner() == msg.sender,
             "you are not allowed to do that."
         );
         require(Validate.title(newName), "newName is not valid");
@@ -137,7 +138,7 @@ contract TodoList {
         List memory list = lists[listId];
         require(list.exists, "List does not exist.");
         require(
-            list.owner == msg.sender || dapp_owner == msg.sender,
+            list.owner == msg.sender || owner() == msg.sender,
             "you are not allowed to do that."
         );
         for (uint256 i = 0; i < listIds.length; i++) {
@@ -178,7 +179,7 @@ contract TodoList {
         require(list.todos[todoIndex].exists, "todo does not exist.");
         Todo storage todo = list.todos[todoIndex];
         require(
-            todo.owner == msg.sender || dapp_owner == msg.sender,
+            todo.owner == msg.sender || owner() == msg.sender,
             "you are not allowed to do that."
         );
         todo.title = "deleted";
