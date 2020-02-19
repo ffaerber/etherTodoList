@@ -5,7 +5,7 @@ import {Validate} from "../libraries/Validate.sol";
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
 import "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol";
 
-contract TodoList is Initializable, Ownable {
+contract EtherTodoList is Initializable, Ownable {
     struct Todo {
         string title;
         bool active;
