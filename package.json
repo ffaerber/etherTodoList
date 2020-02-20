@@ -4,15 +4,7 @@
   "description": "OpenZeppelin kit containing React, & OpenZeppelin SDK",
   "main": "index.js",
   "scripts": {
-    "test": "truffle test",
-    "pre-push": "cd client && npm run pre-push",
-    "pre-commit": "cd client && npm run pre-commit"
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "npm run pre-push",
-      "pre-commit": "npm run pre-commit"
-    }
+    "test": "truffle test"
   },
   "repository": {
     "type": "git",
