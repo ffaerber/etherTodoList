@@ -1,54 +1,35 @@
-import React, { useContext, useEffect, useState } from 'react'
-import {
-  Flex,
-  Box,
-  Table,
-  Modal,
-  Card,
-  Heading,
-  Text
-} from 'rimble-ui';
+import React, { useContext, useEffect, useState } from 'react';
+import { Flex, Box, Table, Modal, Card, Heading, Text } from 'rimble-ui';
 import { PublicAddress, Button } from 'rimble-ui';
 import styles from './EtherTodoList.module.scss';
-import { MyContext } from '../../store/store'
-import NewTodoListModal from './NewTodoListModal'
-import TodoListDetails from './TodoListDetails'
-import TodoListItem from './TodoListItem'
+import { MyContext } from '../../store/store';
+import NewTodoListModal from './NewTodoListModal';
+import TodoListDetails from './TodoListDetails';
+import TodoListItem from './TodoListItem';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
 
 export default function EtherTodoList() {
-  const { state, actions } = useContext(MyContext)
+  const { state, actions } = useContext(MyContext);
   const [isOpen, setIsOpen] = useState(false);
 
   let match = useRouteMatch();
 
+  useEffect(() => {
+    actions.loadWeb3();
+  }, [actions]);
 
   useEffect(() => {
-    actions.loadWeb3()
-  }, [])
+    actions.loadContract();
+  }, [actions, state.web3Context]);
 
   useEffect(() => {
-    actions.loadContract()
-  }, [state.web3Context])
+    actions.callTotalLists();
+  }, [actions, state.contract]);
 
   useEffect(() => {
-    actions.callTotalLists()
-  }, [state.contract])
-
-  useEffect(() => {
-    actions.callListIds()
-  }, [state.contract])
-
-
-
+    actions.callListIds();
+  }, [actions, state.totalLists]);
 
   const closeModal = e => {
     e.preventDefault();
@@ -60,28 +41,30 @@ export default function EtherTodoList() {
     setIsOpen(true);
   };
 
-
   return (
-      <div >
-        <NewTodoListModal isOpen={isOpen} closeModal={closeModal}/>
+    <div>
+      <NewTodoListModal isOpen={isOpen} closeModal={closeModal} />
 
-        <Flex>
-          <Route path={match.path}>
-            <Box width={1/4} bg="#f2f2f2">
-              <Button onClick={openModal}>New TodoList</Button>
-              <ul>{ state.lists.map(list => <TodoListItem list={list}/> ) }</ul>
+      <Flex>
+        <Route path={match.path}>
+          <Box width={1 / 4} bg="#f2f2f2">
+            <Button onClick={openModal}>New TodoList</Button>
+            <ul>
+              {state.lists.map(list => (
+                <TodoListItem list={list} />
+              ))}
+            </ul>
+          </Box>
+        </Route>
+
+        <Switch>
+          <Route path={`${match.path}/:listId`}>
+            <Box width={3 / 4}>
+              <TodoListDetails />
             </Box>
           </Route>
-
-          <Switch>
-            <Route path={`${match.path}/:listId`}>
-              <Box width={3/4} >
-                <TodoListDetails/>
-              </Box>
-            </Route>
-          </Switch>
-        </Flex>
-      </div>
-  )
+        </Switch>
+      </Flex>
+    </div>
+  );
 }
-

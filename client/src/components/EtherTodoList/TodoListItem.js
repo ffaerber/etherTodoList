@@ -1,36 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'rimble-ui';
-import { MyContext } from '../../store/store'
+import { MyContext } from '../../store/store';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
 
-
-export default function TodoListItem({list}) {
-  const { actions } = useContext(MyContext)
+export default function TodoListItem({ list }) {
+  const { actions } = useContext(MyContext);
   const match = useRouteMatch();
-  const {id, name} = list
+  const { id, name } = list;
 
   useEffect(() => {
-    actions.callList(id)
-  }, []);
+    actions.callList(id);
+  }, [actions, id]);
 
-  const handleClick = (e) => {
+  const handleClick = e => {
     e.preventDefault();
-    actions.sendDeleteList(id)
-  }
+    actions.sendDeleteList(id);
+  };
 
   return (
     <li key={id}>
       <Link to={`${match.url}/${id}`}> {name} </Link>
-      <Button onClick={handleClick}>delete</Button>
+      {/* <Button onClick={handleClick}>delete</Button> */}
     </li>
-  )
-
+  );
 }

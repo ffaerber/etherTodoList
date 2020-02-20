@@ -66,14 +66,16 @@ export const applyMiddleware = dispatch => async action => {
 
     case types.CALL_TOTAL_LISTS: {
       const { state } = action.payload;
-      const totalLists = await state.contract.methods.getTotalLists().call();
+      const totalLists = await state.contract.methods.totalLists().call();
       dispatch({ type: types.CALL_TOTAL_LISTS_SUCCESS, payload: totalLists });
       return totalLists;
     }
 
     case types.CALL_LIST_IDS: {
       const { state } = action.payload;
-      const listIds = await state.contract.methods.getListIds(1, 50).call();
+      const { contract } = state;
+      const { _ } = action.payload.state.web3Context.lib.utils;
+      const listIds = await Promise.all(_.times(state.totalLists, i => contract.methods.listIds(i).call()));
       dispatch({ type: types.CALL_LIST_IDS_SUCCESS, payload: listIds });
       return listIds;
     }
@@ -89,7 +91,6 @@ export const applyMiddleware = dispatch => async action => {
       const { state, name } = action.payload;
       const { web3Context, contract, listTamplate } = state;
       const { accounts } = web3Context;
-
       contract.methods.createList(name).send({ from: accounts[0] }, (err, tx) => {
         dispatch({ type: types.SEND_CREATE_LIST_STARTED, payload: { tx } });
       });
