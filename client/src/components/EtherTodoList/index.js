@@ -17,19 +17,21 @@ export default function EtherTodoList() {
 
   useEffect(() => {
     actions.loadWeb3();
-  }, [actions]);
+  }, []);
 
   useEffect(() => {
     actions.loadContract();
-  }, [actions, state.web3Context]);
+  }, [state.web3Context]);
 
   useEffect(() => {
     actions.callTotalLists();
-  }, [actions, state.contract]);
+  }, [state.contract]);
 
   useEffect(() => {
     actions.callListIds();
-  }, [actions, state.totalLists]);
+  }, [state.totalLists]);
+
+
 
   const closeModal = e => {
     e.preventDefault();

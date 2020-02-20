@@ -11,7 +11,7 @@ export default function TodoListItem({ list }) {
 
   useEffect(() => {
     actions.callList(id);
-  }, [actions, id]);
+  }, [id]);
 
   const handleClick = e => {
     e.preventDefault();
