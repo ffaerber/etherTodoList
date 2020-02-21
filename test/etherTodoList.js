@@ -42,20 +42,24 @@ describe('etherTodoList', function() {
 
 
   it('should be able to create and update todo as listowner', async () => {
-    await etherTodoList.createList('myList1', { from: user1 });
+    await etherTodoList.createList('Groceries', { from: user1 });
     const totalLists = await etherTodoList.totalLists()
     expect(totalLists).to.bignumber.equal(new BN(1));
     const listIds = await Promise.all(_.times(totalLists, i => etherTodoList.listIds(i)))
     expect(await etherTodoList.getList(listIds[0])).to.have.property('totalTodos').to.bignumber.equal(new BN(0));
 
-    const msg = 'hello this is a todo!';
-    await etherTodoList.createTodo(listIds[0], msg, { from: user1 });
-    expect(await etherTodoList.getTodo(listIds[0], 0)).to.have.property('body').to.equal(msg);
+    await etherTodoList.createTodo(listIds[0], 'Bread', { from: user1 });
+    await etherTodoList.createTodo(listIds[0], 'Butter', { from: user1 });
+    await etherTodoList.createTodo(listIds[0], 'Chese', { from: user1 });
+    expect(await etherTodoList.getTodo(listIds[0], 0)).to.have.property('body').to.equal('Bread');
+    expect(await etherTodoList.getTodo(listIds[0], 1)).to.have.property('body').to.equal('Butter');
+    expect(await etherTodoList.getTodo(listIds[0], 2)).to.have.property('body').to.equal('Chese');
 
-    const newMsg = 'hello this is a updated todo!';
-    await etherTodoList.updateTodo(listIds[0], 0, newMsg, { from: user1 })
-    expect(await etherTodoList.getTodo(listIds[0], 0)).to.have.property('body').to.equal(newMsg);
 
+    await etherTodoList.updateTodo(listIds[0], 2, 'Cheese', { from: user1 })
+    expect(await etherTodoList.getTodo(listIds[0], 0)).to.have.property('body').to.equal('Bread');
+    expect(await etherTodoList.getTodo(listIds[0], 1)).to.have.property('body').to.equal('Butter');
+    expect(await etherTodoList.getTodo(listIds[0], 2)).to.have.property('body').to.equal('Cheese');
   });
 
 

@@ -35,19 +35,31 @@ export const useActions = (state, dispatch) => ({
     }
   },
 
-
-
   sendCreateList: (name) => {
     if(state.contract){
       dispatch({ type: types.SEND_CREATE_LIST, payload: {state, name} })
     }
   },
 
-  sendDeleteList: (id) => {
-    if(state.contract){
-      dispatch({ type: types.SEND_DELETE_LIST, payload: {state, id} })
-    }
-  }
 
+
+
+  callTotalTodos: (listId) => {
+    if(state.contract){
+      dispatch({ type: types.CALL_TOTAL_TODOS, payload: {state, listId} })
+    }
+  },
+
+  callTodo: (listId, todoId) => {
+    if(state.contract){
+      dispatch({ type: types.CALL_TODO, payload: {state, listId, todoId} })
+    }
+  },
+
+  sendCreateTodo: (listId, name) => {
+    if(state.contract){
+      dispatch({ type: types.SEND_CREATE_TODO, payload: {state, listId, name} })
+    }
+  },
 
 })

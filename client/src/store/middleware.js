@@ -40,6 +40,7 @@ export const applyMiddleware = dispatch => async action => {
             deployedNetwork && deployedNetwork.address,
           );
           contract.events.allEvents({}, (error, event) => {
+            console.log(event)
             switch (event.event) {
               case 'ListCreated':
                 dispatch({ type: types.SEND_CREATE_LIST_SUCCESS, payload: event });
@@ -49,8 +50,12 @@ export const applyMiddleware = dispatch => async action => {
                 dispatch({ type: types.SEND_UPDATE_LIST_SUCCESS, payload: event });
                 break;
 
-              case 'ListDeleted':
-                dispatch({ type: types.SEND_DELETE_LIST_SUCCESS, payload: event });
+              case 'TodoCreated':
+                dispatch({ type: types.SEND_CREATE_TODO_SUCCESS, payload: event });
+                break;
+
+              case 'TodoUpdated':
+                dispatch({ type: types.SEND_UPDATE_TODO_SUCCESS, payload: event });
                 break;
 
               default:
@@ -80,10 +85,19 @@ export const applyMiddleware = dispatch => async action => {
       return listIds;
     }
 
+
+
+
+
     case types.CALL_LIST: {
       const { state, id } = action.payload;
+      const { contract } = state;
+      const { _ } = action.payload.state.web3Context.lib.utils;
       const list = await state.contract.methods.getList(id).call();
-      dispatch({ type: types.CALL_LIST_SUCCESS, payload: list });
+      const todos = await _.times(list.totalTodos, todoIndex => {
+        return {id: todoIndex.toString()}
+      })
+      dispatch({ type: types.CALL_LIST_SUCCESS, payload: {...list, todos} });
       return list;
     }
 
@@ -97,14 +111,27 @@ export const applyMiddleware = dispatch => async action => {
       return accounts;
     }
 
-    case types.SEND_DELETE_LIST: {
-      const { state, id } = action.payload;
-      const { accounts } = state.web3Context;
-      state.contract.methods.deleteList(id).send({ from: accounts[0] }, (err, tx) => {
-        dispatch({ type: types.SEND_DELETE_LIST_STARTED, payload: { tx } });
-      });
-      return accounts;
+
+
+    case types.CALL_TODO: {
+      const { state, listId, todoId } = action.payload;
+      const todo = await state.contract.methods.getTodo(listId, todoId).call();
+      dispatch({ type: types.CALL_TODO_SUCCESS, payload: {listId, todo} });
+      return todo;
     }
+
+
+    case types.SEND_CREATE_TODO: {
+      const { state, listId, name } = action.payload;
+      const { web3Context, contract, listTamplate } = state;
+      const { accounts } = web3Context;
+      contract.methods.createTodo(listId, name).send({ from: accounts[0] }, (err, tx) => {
+        dispatch({ type: types.SEND_CREATE_TODO_STARTED, payload: { tx } });
+      });
+      return name;
+    }
+
+
 
     default:
       dispatch(action);

@@ -37,16 +37,34 @@ const reducer = (state = initialState, action) => {
       return { ...state, lists: state.lists.map(oldList => oldList.id == newList.id? ({...oldList, ...newList}): oldList) }
     }
 
+
     case types.SEND_CREATE_LIST_SUCCESS:{
       const {returnValues} = action.payload
       const list = {id: returnValues.listId}
       return { ...state, lists: state.lists.concat(list) }
     }
 
-    case types.SEND_DELETE_LIST_SUCCESS:{
-      const {returnValues} = action.payload
-      return { ...state, lists: state.lists.filter(list => list.id !== returnValues.listId) }
+
+    case types.CALL_TODO_SUCCESS:{
+      const {listId, todo} = action.payload
+      const list = state.lists.find(list => list.id === listId)
+      const newTodos = list.todos.map(oldTodo => oldTodo.id == todo.id? ({...oldTodo, ...todo}): oldTodo)
+      const newList = {...list, todos: newTodos }
+      return { ...state, lists: state.lists.map(oldList => oldList.id == newList.id? ({...oldList, ...newList}): oldList) }
     }
+
+    case types.SEND_CREATE_TODO_SUCCESS:{
+      const {returnValues} = action.payload
+      const {listId, todoIndex} = returnValues
+      const list = state.lists.find(list => list.id === listId)
+      const todo = {id: returnValues.todoIndex}
+      const newTodos = list.todos.concat(todo)
+      const newList = {...list, todos: newTodos }
+      return { ...state, lists: state.lists.map(oldList => oldList.id == newList.id? ({...oldList, ...newList}): oldList) }
+    }
+
+
+
 
     default:
       return state;

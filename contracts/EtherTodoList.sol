@@ -7,6 +7,7 @@ import "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol
 
 contract EtherTodoList is Initializable, Ownable {
     struct Todo {
+        uint256 id;
         string title;
         bool active;
         uint256 date;
@@ -91,21 +92,28 @@ contract EtherTodoList is Initializable, Ownable {
     function getTodo(uint256 listId, uint256 todoIndex)
         external
         view
-        returns (string memory body, uint256 date, address owner)
+        returns (uint256 id, string memory body, uint256 date, address owner)
     {
         List storage list = lists[listId];
         require(list.exists, "List does not exist.");
         require(list.todos[todoIndex].exists, "todo does not exist.");
         Todo memory todo = list.todos[todoIndex];
-        return (todo.title, todo.date, todo.owner);
+        return (todo.id, todo.title, todo.date, todo.owner);
     }
 
     function createTodo(uint256 listId, string calldata title) external {
         List storage list = lists[listId];
         require(list.exists, "List does not exist.");
         require(Validate.title(title), "title is not valid");
-        Todo memory newTodo = Todo(title, true, now, msg.sender, true);
         uint256 todoIndex = list.totalTodos++;
+        Todo memory newTodo = Todo(
+            todoIndex,
+            title,
+            true,
+            now,
+            msg.sender,
+            true
+        );
         list.todos[todoIndex] = newTodo;
         emit TodoCreated(listId, todoIndex);
     }

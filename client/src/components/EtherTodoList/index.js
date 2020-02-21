@@ -49,7 +49,11 @@ export default function EtherTodoList() {
 
       <Flex>
         <Route path={match.path}>
-          <Box width={1 / 4} bg="#f2f2f2">
+          <Box
+            p={3}
+            width={[0.3, 0.2]}
+            bg="#f2f2f2"
+          >
             <Button onClick={openModal}>New TodoList</Button>
             <ul>
               {state.lists.map(list => (
@@ -61,12 +65,18 @@ export default function EtherTodoList() {
 
         <Switch>
           <Route path={`${match.path}/:listId`}>
-            <Box width={3 / 4}>
+            <Box
+              p={3}
+              width={[0.7, 0.8]}
+              bg="#f2f2f8"
+            >
               <TodoListDetails />
             </Box>
           </Route>
         </Switch>
       </Flex>
+
+
     </div>
   );
 }
