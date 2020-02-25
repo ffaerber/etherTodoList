@@ -11,6 +11,10 @@ const initialState = {
   error: ''
 };
 
+const cleaner = (obj) => {
+  return obj.filter((value, index, arr) => value > 0)
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
 
@@ -27,7 +31,7 @@ const reducer = (state = initialState, action) => {
     }
 
     case types.CALL_LIST_IDS_SUCCESS:{
-      const listIds = action.payload.filter((value, index, arr) => value > 0)
+      const listIds = action.payload
       const lists = listIds.map(id => {return {id: id}} )
       return { ...state, lists: state.lists.concat(lists) }
     }
