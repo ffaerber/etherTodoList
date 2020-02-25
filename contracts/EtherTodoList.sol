@@ -18,11 +18,12 @@ contract EtherTodoList is Initializable, Ownable {
     struct List {
         uint256 id;
         string title;
-        uint256 totalTodos;
         bool active;
         uint256 date;
         address owner;
         bool exists;
+        uint256 totalTodos;
+        uint256[] todoIds;
         mapping(uint256 => Todo) todos;
     }
 
@@ -33,8 +34,8 @@ contract EtherTodoList is Initializable, Ownable {
     event ListCreated(uint256 listId);
     event ListUpdatet(uint256 listId);
 
-    event TodoCreated(uint256 listId, uint256 todoIndex);
-    event TodoUpdatet(uint256 listId, uint256 todoIndex);
+    event TodoCreated(uint256 listId, uint256 todoId);
+    event TodoUpdatet(uint256 listId, uint256 todoId);
 
     function initialize(address sender) public initializer {
         Ownable.initialize(sender);
@@ -45,59 +46,73 @@ contract EtherTodoList is Initializable, Ownable {
         view
         returns (
             uint256 id,
-            string memory name,
+            string memory title,
             uint256 totalTodos,
+            uint256[] memory todoIds,
             uint256 date,
             address owner
         )
     {
         List storage list = lists[listId];
         require(list.exists, "List does not exist.");
-        return (list.id, list.title, list.totalTodos, list.date, list.owner);
+        return (
+            list.id,
+            list.title,
+            list.totalTodos,
+            list.todoIds,
+            list.date,
+            list.owner
+        );
     }
 
-    function createList(string calldata name) external {
-        require(Validate.title(name), "name is not valid");
+    function createList(string calldata title) external {
+        require(Validate.title(title), "title is not valid");
         uint256 listId = uint256(
-            keccak256(abi.encodePacked(now, msg.sender, name))
+            keccak256(abi.encodePacked(now, msg.sender, title))
         ) %
             9000000;
-        List memory newList = List({
+        List memory list = List({
             id: listId,
-            title: name,
+            title: title,
             totalTodos: 0,
+            todoIds: new uint256[](0),
             active: true,
             date: now,
             owner: msg.sender,
             exists: true
         });
         listIds.push(listId);
-        emit ListCreated(listId);
-        lists[listId] = newList;
+        lists[listId] = list;
         totalLists++;
+
+        emit ListCreated(listId);
     }
 
-    function updateList(uint256 listId, string calldata newName) external {
+    function updateList(uint256 listId, string calldata title)
+        external
+        returns (bool success)
+    {
         List storage list = lists[listId];
         require(list.exists, "List does not exist.");
         require(
             list.owner == msg.sender || owner() == msg.sender,
             "you are not allowed to do that."
         );
-        require(Validate.title(newName), "newName is not valid");
-        list.title = newName;
+        require(Validate.title(title), "title is not valid");
+        list.title = title;
         emit ListUpdatet(listId);
+        return true;
     }
 
-    function getTodo(uint256 listId, uint256 todoIndex)
+    function getTodo(uint256 listId, uint256 todoId)
         external
         view
-        returns (uint256 id, string memory body, uint256 date, address owner)
+        returns (uint256 id, string memory title, uint256 date, address owner)
     {
         List storage list = lists[listId];
         require(list.exists, "List does not exist.");
-        require(list.todos[todoIndex].exists, "todo does not exist.");
-        Todo memory todo = list.todos[todoIndex];
+        require(list.todos[todoId].exists, "todo does not exist.");
+        Todo memory todo = list.todos[todoId];
         return (todo.id, todo.title, todo.date, todo.owner);
     }
 
@@ -105,24 +120,30 @@ contract EtherTodoList is Initializable, Ownable {
         List storage list = lists[listId];
         require(list.exists, "List does not exist.");
         require(Validate.title(title), "title is not valid");
-        uint256 todoIndex = list.totalTodos++;
-        Todo memory newTodo = Todo(
-            todoIndex,
-            title,
-            true,
-            now,
-            msg.sender,
-            true
-        );
-        list.todos[todoIndex] = newTodo;
-        emit TodoCreated(listId, todoIndex);
+
+        uint256 todoId = uint256(
+            keccak256(abi.encodePacked(now, msg.sender, title))
+        ) %
+            9000000;
+
+        Todo memory todo = Todo({
+            id: todoId,
+            title: title,
+            active: true,
+            date: now,
+            owner: msg.sender,
+            exists: true
+        });
+        list.todos[todoId] = todo;
+        list.todoIds.push(todoId);
+        list.totalTodos++;
+        emit TodoCreated(listId, todoId);
     }
 
-    function updateTodo(
-        uint256 listId,
-        uint256 todoIndex,
-        string calldata newName
-    ) external returns (bool success) {
+    function updateTodo(uint256 listId, uint256 todoId, string calldata newName)
+        external
+        returns (bool success)
+    {
         List storage list = lists[listId];
         require(list.exists, "List does not exist.");
         require(Validate.title(newName), "newName is not valid");
@@ -130,8 +151,8 @@ contract EtherTodoList is Initializable, Ownable {
             list.owner == msg.sender || owner() == msg.sender,
             "you are not allowed to do that."
         );
-        list.todos[todoIndex].title = newName;
-        emit TodoCreated(listId, todoIndex);
+        list.todos[todoId].title = newName;
+        emit TodoCreated(listId, todoId);
         return true;
     }
 

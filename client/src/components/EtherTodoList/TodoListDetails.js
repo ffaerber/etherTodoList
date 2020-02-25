@@ -21,23 +21,20 @@ import {
 
 
 export default function TodoListDetails() {
-  const [todoName, setTodoName] = useState("");
-
   const { listId } = useParams();
-  const [list, setList] = useState({});
   const { state, actions } = useContext(MyContext)
+
+  const [todoName, setTodoName] = useState("");
+  const [list, setList] = useState({id: listId, name: 'loading'});
 
   useEffect(() => {
     actions.callList(listId)
   }, [listId]);
 
   useEffect(() => {
-    const stateList = state.lists.find(l => l.id === listId )
-    setList(stateList ? {...list, ...stateList} : {})
-  }, [state.lists]);
-
-
-
+    const newList = state.lists.find(x => x.id === listId )
+    setList({...list, ...newList})
+  }, [state.lists, listId]);
 
   const handleSubmit = evt => {
     evt.preventDefault();
@@ -59,10 +56,10 @@ export default function TodoListDetails() {
       <h3>{list.name}</h3>
       <h4> totalTodos: {list.totalTodos}</h4>
       <ul>
-        {list.todos ? (
-          list.todos.map(todo => ( <TodoItem listId={listId} todo={todo}/> ))
+        {list.todoIds ? (
+          list.todoIds.map(todoId => ( <TodoItem listId={listId} todoId={todoId}/> ))
         ) : (
-          <div>loading...</div>
+          <div>no todos found</div>
         )}
       </ul>
 

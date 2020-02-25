@@ -94,10 +94,7 @@ export const applyMiddleware = dispatch => async action => {
       const { contract } = state;
       const { _ } = action.payload.state.web3Context.lib.utils;
       const list = await state.contract.methods.getList(id).call();
-      const todos = await _.times(list.totalTodos, todoIndex => {
-        return {id: todoIndex.toString()}
-      })
-      dispatch({ type: types.CALL_LIST_SUCCESS, payload: {...list, todos} });
+      dispatch({ type: types.CALL_LIST_SUCCESS, payload: list });
       return list;
     }
 

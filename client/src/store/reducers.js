@@ -7,7 +7,9 @@ const initialState = {
   contract: null,
   loading: false,
   totalLists: 0,
+  listIds: [],
   lists: [],
+  todos: [],
   error: ''
 };
 
@@ -18,56 +20,59 @@ const cleaner = (obj) => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
 
+
     case types.LOAD_WEB3_SUCCESS:{
       return { ...state, web3Context: action.payload };
     }
+
 
     case types.LOAD_CONTRACT_SUCCESS:{
       return { ...state, contract: action.payload };
     }
 
+
     case types.CALL_TOTAL_LISTS_SUCCESS:{
       return { ...state, totalLists: action.payload };
     }
 
+
     case types.CALL_LIST_IDS_SUCCESS:{
       const listIds = action.payload
-      const lists = listIds.map(id => {return {id: id}} )
-      return { ...state, lists: state.lists.concat(lists) }
+      return { ...state, listIds }
     }
 
+
     case types.CALL_LIST_SUCCESS:{
-      const newList = action.payload
-      return { ...state, lists: state.lists.map(oldList => oldList.id == newList.id? ({...oldList, ...newList}): oldList) }
+      const list = {...action.payload}
+      let lists = state.lists.slice();
+      lists.splice(list.id, 0, list);
+      return { ...state, lists }
     }
 
 
     case types.SEND_CREATE_LIST_SUCCESS:{
       const {returnValues} = action.payload
-      const list = {id: returnValues.listId}
-      return { ...state, lists: state.lists.concat(list) }
+      const {listId} = returnValues
+      return { ...state, listIds: state.listIds.concat(listId) }
     }
 
 
     case types.CALL_TODO_SUCCESS:{
       const {listId, todo} = action.payload
-      const list = state.lists.find(list => list.id === listId)
-      const newTodos = list.todos.map(oldTodo => oldTodo.id == todo.id? ({...oldTodo, ...todo}): oldTodo)
-      const newList = {...list, todos: newTodos }
-      return { ...state, lists: state.lists.map(oldList => oldList.id == newList.id? ({...oldList, ...newList}): oldList) }
+      const newTodo = {listId, ...todo}
+      let todos = state.todos.slice();
+      todos.splice(newTodo.id, 0, newTodo);
+      return { ...state, todos }
     }
+
 
     case types.SEND_CREATE_TODO_SUCCESS:{
       const {returnValues} = action.payload
-      const {listId, todoIndex} = returnValues
-      const list = state.lists.find(list => list.id === listId)
-      const todo = {id: returnValues.todoIndex}
-      const newTodos = list.todos.concat(todo)
-      const newList = {...list, todos: newTodos }
+      const {listId, todoId} = returnValues
+      const newList = {...state.lists.find(x => x.id === listId)}
+      newList.todoIds.push(todoId)
       return { ...state, lists: state.lists.map(oldList => oldList.id == newList.id? ({...oldList, ...newList}): oldList) }
     }
-
-
 
 
     default:

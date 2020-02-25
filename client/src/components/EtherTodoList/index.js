@@ -56,8 +56,8 @@ export default function EtherTodoList() {
           >
             <Button onClick={openModal}>New TodoList</Button>
             <ul>
-              {state.lists.map(list => (
-                <TodoListItem list={list} />
+              {state.listIds.map(listId => (
+                <TodoListItem listId={listId} />
               ))}
             </ul>
           </Box>

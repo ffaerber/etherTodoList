@@ -4,23 +4,29 @@ import { MyContext } from '../../store/store';
 
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
 
-export default function TodoListItem({ list }) {
-  const { actions } = useContext(MyContext);
+export default function TodoListItem({ listId }) {
+  const { actions, state } = useContext(MyContext);
   const match = useRouteMatch();
-  const { id, name } = list;
+
+  const [list, setList] = useState({id: listId, title: 'list loading...'});
 
   useEffect(() => {
-    actions.callList(id);
-  }, [id]);
+    actions.callList(listId);
+  }, [listId]);
+
+  useEffect(() => {
+    const newList = state.lists.find(x => x.id === listId)
+    setList({...list, ...newList})
+  }, [state.lists]);
 
   const handleClick = e => {
     e.preventDefault();
-    actions.sendDeleteList(id);
+    actions.sendDeleteList(listId);
   };
 
   return (
-    <li key={id}>
-      <Link to={`${match.url}/${id}`}> {name} </Link>
+    <li key={list.id}>
+      <Link to={`${match.url}/${list.id}`}> {list.title} </Link>
       {/* <Button onClick={handleClick}>delete</Button> */}
     </li>
   );
