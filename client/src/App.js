@@ -7,8 +7,9 @@ import {
   Link
 } from "react-router-dom";
 
-import EtherTodoList from './components/EtherTodoList/index.js';
 import styles from './App.module.scss';
+
+import List from './components/List/index';
 
 import {MyProvider} from './store/store';
 
@@ -31,7 +32,7 @@ const App = props => {
 
               <Switch>
                 <Route path="/todolist">
-                  <EtherTodoList/>
+                  <List/>
                 </Route>
                 <Route path="/">
                   <Home />

@@ -4,7 +4,7 @@ import { MyContext } from '../../store/store';
 
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
 
-export default function TodoListItem({ listId }) {
+export default function ListItem({ listId }) {
   const { actions, state } = useContext(MyContext);
   const match = useRouteMatch();
 

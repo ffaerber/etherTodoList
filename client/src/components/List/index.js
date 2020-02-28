@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Flex, Box, Table, Modal, Card, Heading, Text } from 'rimble-ui';
+import { Flex, Box, Table, Card, Heading, Text } from 'rimble-ui';
 import { PublicAddress, Button } from 'rimble-ui';
-import styles from './EtherTodoList.module.scss';
+
 import { MyContext } from '../../store/store';
-import NewTodoListModal from './NewTodoListModal';
-import TodoListDetails from './TodoListDetails';
-import TodoListItem from './TodoListItem';
+import Modal from './Modal';
+import Todo from '../Todo';
+import ListItem from './ListItem';
 
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
 
-export default function EtherTodoList() {
+export default function List() {
   const { state, actions } = useContext(MyContext);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -45,7 +45,7 @@ export default function EtherTodoList() {
 
   return (
     <div>
-      <NewTodoListModal isOpen={isOpen} closeModal={closeModal} />
+      <Modal isOpen={isOpen} closeModal={closeModal} />
 
       <Flex>
         <Route path={match.path}>
@@ -57,7 +57,7 @@ export default function EtherTodoList() {
             <Button onClick={openModal}>New TodoList</Button>
             <ul>
               {state.listIds.map(listId => (
-                <TodoListItem listId={listId} />
+                <ListItem listId={listId} />
               ))}
             </ul>
           </Box>
@@ -70,7 +70,7 @@ export default function EtherTodoList() {
               width={[0.7, 0.8]}
               bg="#f2f2f8"
             >
-              <TodoListDetails />
+              <Todo />
             </Box>
           </Route>
         </Switch>

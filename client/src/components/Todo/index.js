@@ -20,7 +20,7 @@ import {
 } from "rimble-ui";
 
 
-export default function TodoListDetails() {
+export default function Todo() {
   const { listId } = useParams();
   const { state, actions } = useContext(MyContext)
 
