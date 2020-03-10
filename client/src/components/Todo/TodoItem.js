@@ -2,6 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button } from 'rimble-ui';
 import { MyContext } from '../../store/store';
 
+import {
+  Box,
+  Flex,
+  Card
+} from "rimble-ui";
+
 
 export default function TodoItem({ listId, todoId }) {
   const { actions, state } = useContext(MyContext);
@@ -18,8 +24,10 @@ export default function TodoItem({ listId, todoId }) {
   }, [state.todos]);
 
   return (
-    <li key={todo.id}>
+
+    <Card key={todo.id} bg="black" color="white">
       {todo.id}={todo.title}
-    </li>
+    </Card>
+
   );
 }

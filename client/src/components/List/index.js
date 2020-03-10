@@ -4,7 +4,7 @@ import { PublicAddress, Button } from 'rimble-ui';
 
 import { MyContext } from '../../store/store';
 import Modal from './Modal';
-import Todo from '../Todo';
+import ListDetail from './ListDetail';
 import ListItem from './ListItem';
 
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
@@ -15,13 +15,6 @@ export default function List() {
 
   let match = useRouteMatch();
 
-  useEffect(() => {
-    actions.loadWeb3();
-  }, []);
-
-  useEffect(() => {
-    actions.loadContract();
-  }, [state.web3Context]);
 
   useEffect(() => {
     actions.callTotalLists();
@@ -47,14 +40,11 @@ export default function List() {
     <div>
       <Modal isOpen={isOpen} closeModal={closeModal} />
 
-      <Flex>
+      <Flex >
+
         <Route path={match.path}>
-          <Box
-            p={3}
-            width={[0.3, 0.2]}
-            bg="#f2f2f2"
-          >
-            <Button onClick={openModal}>New TodoList</Button>
+          <Box width={[1, 0.5]}>
+            <Button onClick={openModal}>New List</Button>
             <ul>
               {state.listIds.map(listId => (
                 <ListItem listId={listId} />
@@ -63,17 +53,14 @@ export default function List() {
           </Box>
         </Route>
 
-        <Switch>
-          <Route path={`${match.path}/:listId`}>
-            <Box
-              p={3}
-              width={[0.7, 0.8]}
-              bg="#f2f2f8"
-            >
-              <Todo />
+        {/* <Switch>
+          <Route path={`/list/:listId`}>
+            <Box width={[1, 0.5]} bg="#f2f2f8">
+              <ListDetail/>
             </Box>
           </Route>
-        </Switch>
+        </Switch> */}
+
       </Flex>
 
 

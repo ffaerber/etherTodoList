@@ -13,9 +13,7 @@ const initialState = {
   error: ''
 };
 
-const cleaner = (obj) => {
-  return obj.filter((value, index, arr) => value > 0)
-}
+
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -23,6 +21,10 @@ const reducer = (state = initialState, action) => {
 
     case types.LOAD_WEB3_SUCCESS:{
       return { ...state, web3Context: action.payload };
+    }
+
+    case types.LOAD_WEB3_FAIL:{
+      return { ...state };
     }
 
 

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { MyContext} from '../../store/store'
 import { useParams } from "react-router-dom";
 import { EthAddress } from "rimble-ui";
-import TodoItem from './TodoItem'
+import TodoItem from '../Todo/TodoItem'
 import {
   Box,
   Card,
@@ -20,7 +20,7 @@ import {
 } from "rimble-ui";
 
 
-export default function Todo() {
+export default function ListDetail() {
   const { listId } = useParams();
   const { state, actions } = useContext(MyContext)
 
@@ -29,12 +29,16 @@ export default function Todo() {
 
   useEffect(() => {
     actions.callList(listId)
-  }, [listId]);
+  }, [state.contract, listId]);
 
   useEffect(() => {
     const newList = state.lists.find(x => x.id === listId )
     setList({...list, ...newList})
-  }, [state.lists, listId]);
+  }, [state.contract, state.lists, listId]);
+
+
+
+
 
   const handleSubmit = evt => {
     evt.preventDefault();
@@ -53,15 +57,15 @@ export default function Todo() {
   return (
 
     <div>
-      <h3>{list.name}</h3>
+      <h3>{list.title}</h3>
       <h4> totalTodos: {list.totalTodos}</h4>
-      <ul>
+
         {list.todoIds ? (
           list.todoIds.map(todoId => ( <TodoItem listId={listId} todoId={todoId}/> ))
         ) : (
           <div>no todos found</div>
         )}
-      </ul>
+
 
       <Form onSubmit={handleSubmit}>
 

@@ -26,7 +26,7 @@ export default function ListItem({ listId }) {
 
   return (
     <li key={list.id}>
-      <Link to={`${match.url}/${list.id}`}> {list.title} </Link>
+      <Link to={`list/${list.id}`}> {list.title} </Link>
       {/* <Button onClick={handleClick}>delete</Button> */}
     </li>
   );
