@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import types from './actionTypes';
 import { fromInjected, fromConnection } from '@openzeppelin/network';
 import { solidityLoaderOptions } from '../../config/webpack';
@@ -31,6 +30,7 @@ export const applyMiddleware = dispatch => async action => {
       } catch (e) {
         console.log(e);
       }
+      await state.web3Context.lib.currentProvider.enable()
       const networkId = await state.web3Context.lib.eth.net.getId();
       if (EtherTodoList.networks) {
         deployedNetwork = EtherTodoList.networks[networkId.toString()];
@@ -92,15 +92,14 @@ export const applyMiddleware = dispatch => async action => {
     case types.CALL_LIST: {
       const { state, id } = action.payload;
       const { contract } = state;
-      const { _ } = action.payload.state.web3Context.lib.utils;
-      const list = await state.contract.methods.getList(id).call();
+      const list = await contract.methods.getList(id).call();
       dispatch({ type: types.CALL_LIST_SUCCESS, payload: list });
       return list;
     }
 
     case types.SEND_CREATE_LIST: {
       const { state, name } = action.payload;
-      const { web3Context, contract, listTamplate } = state;
+      const { web3Context, contract } = state;
       const { accounts } = web3Context;
       contract.methods.createList(name).send({ from: accounts[0] }, (err, tx) => {
         dispatch({ type: types.SEND_CREATE_LIST_STARTED, payload: { tx } });
