@@ -32,10 +32,11 @@
     "@openzeppelin/contracts-ethereum-package": "^2.4.0",
     "dotenv": "^8.2.0",
     "lodash": "^4.17.15",
+    "truffle": "^5.1.16",
     "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
-    "@openzeppelin/cli": "^2.7.1",
+    "@openzeppelin/cli": "^2.7.2",
     "chai": "^4.2.0",
     "husky": "^3.1.0",
     "openzeppelin-test-helpers": "^0.5.1"
