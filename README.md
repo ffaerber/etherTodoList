@@ -20,7 +20,7 @@
 
 5. open new tab and start the local blockchain
 
-        $ ganache-cli --deterministic
+        $ ganache-cli -d -b 12
 
 6. deploy contracts to the local blockchain
 
