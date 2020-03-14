@@ -23,9 +23,6 @@ export default function Web3Connect() {
   const { state, actions } = useContext(MyContext)
   const [web3Context, setWeb3Context] = useState();
 
-  useEffect(() => {
-    actions.loadWeb3();
-  }, []);
 
 
   useEffect(() => {
