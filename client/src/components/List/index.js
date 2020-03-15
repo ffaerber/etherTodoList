@@ -46,8 +46,8 @@ export default function List() {
           <Box width={[1, 0.5]}>
             <Button onClick={openModal}>New List</Button>
             <ul>
-              {state.listIds.map(listId => (
-                <ListItem listId={listId} />
+              {state.lists.map(list => (
+                <ListItem list={list} />
               ))}
             </ul>
           </Box>

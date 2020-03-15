@@ -7,7 +7,6 @@ const initialState = {
   contract: null,
   loading: false,
   totalLists: 0,
-  listIds: [],
   lists: [],
   todos: [],
   error: ''
@@ -40,22 +39,34 @@ const reducer = (state = initialState, action) => {
 
     case types.CALL_LIST_IDS_SUCCESS:{
       const listIds = action.payload
-      return { ...state, listIds }
+      const lists = listIds.map(id => {return { id } });
+      return { ...state, lists }
     }
 
 
     case types.CALL_LIST_SUCCESS:{
       const list = {...action.payload}
       let lists = state.lists.slice();
-      lists.splice(list.id, 0, list);
+      const objectIndex = lists.findIndex(l => l.id === list.id)
+      lists.splice(objectIndex, 1, list);
       return { ...state, lists }
+    }
+    
+
+    case types.SEND_CREATE_LIST_STARTED:{
+      const list = {...action.payload}
+      return { ...state, lists: state.lists.concat(list) }
     }
 
 
     case types.SEND_CREATE_LIST_SUCCESS:{
       const {returnValues} = action.payload
       const {listId} = returnValues
-      return { ...state, listIds: state.listIds.concat(listId) }
+      const list = {id: listId}
+      let lists = state.lists.slice();
+      const objectIndex = lists.findIndex(l => l.id === list.id)
+      lists.splice(objectIndex, 1, list);
+      return { ...state, lists }
     }
 
 

@@ -98,11 +98,11 @@ export const applyMiddleware = dispatch => async action => {
     }
 
     case types.SEND_CREATE_LIST: {
-      const { state, name } = action.payload;
+      const { state, title } = action.payload;
       const { web3Context, contract } = state;
       const { accounts } = web3Context;
-      contract.methods.createList(name).send({ from: accounts[0] }, (err, tx) => {
-        dispatch({ type: types.SEND_CREATE_LIST_STARTED, payload: { tx } });
+      contract.methods.createList(title).send({ from: accounts[0] }, (err, tx) => {
+        dispatch({ type: types.SEND_CREATE_LIST_STARTED, payload: { tx, title } });
       });
       return accounts;
     }

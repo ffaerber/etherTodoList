@@ -35,9 +35,9 @@ export const useActions = (state, dispatch) => ({
     }
   },
 
-  sendCreateList: (name) => {
+  sendCreateList: (title) => {
     if(state.contract){
-      dispatch({ type: types.SEND_CREATE_LIST, payload: {state, name} })
+      dispatch({ type: types.SEND_CREATE_LIST, payload: {state, title} })
     }
   },
 
