@@ -40,29 +40,12 @@ export default function List() {
     <div>
       <Modal isOpen={isOpen} closeModal={closeModal} />
 
-      <Flex >
-
         <Route path={match.path}>
-          <Box width={[1, 0.5]}>
-            <Button onClick={openModal}>New List</Button>
-            <ul>
-              {state.lists.map(list => (
-                <ListItem list={list} />
-              ))}
-            </ul>
-          </Box>
+          <Button onClick={openModal}>New List</Button>
+          {state.lists.map(list => (
+            <ListItem list={list} />
+          ))}
         </Route>
-
-        {/* <Switch>
-          <Route path={`/list/:listId`}>
-            <Box width={[1, 0.5]} bg="#f2f2f8">
-              <ListDetail/>
-            </Box>
-          </Route>
-        </Switch> */}
-
-      </Flex>
-
 
     </div>
   );
