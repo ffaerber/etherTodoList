@@ -15,9 +15,9 @@ export default function ListItem({ list }) {
   }, [list]);
 
   return (
-    <Card key={list.id} bg="black">
+    <Card key={list.id} mt={2}>
       <Link to={`list/${list.id}`}>
-        {list.title} 
+        {list.title}
       </Link>
     </Card>
   );

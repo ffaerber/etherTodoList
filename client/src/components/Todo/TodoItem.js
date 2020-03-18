@@ -23,10 +23,10 @@ export default function TodoItem({ listId, todoId }) {
     setTodo({...todo, ...newTodo})
   }, [state.todos]);
 
-  
+
   return (
-    <Card key={todo.id} bg="black" color="white">
-      {todo.id}={todo.title}
+    <Card key={todo.id} mt={2}>
+      {todo.title}
     </Card>
   );
 }

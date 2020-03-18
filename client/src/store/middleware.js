@@ -44,18 +44,22 @@ export const applyMiddleware = dispatch => async action => {
             switch (event.event) {
               case 'ListCreated':
                 dispatch({ type: types.SEND_CREATE_LIST_SUCCESS, payload: event });
+                dispatch({ type: types.TX_REMOVE, payload: { tx: event.transactionHash } });
                 break;
 
               case 'ListUpdated':
                 dispatch({ type: types.SEND_UPDATE_LIST_SUCCESS, payload: event });
+                dispatch({ type: types.TX_REMOVE, payload: { tx: event.transactionHash } });
                 break;
 
               case 'TodoCreated':
                 dispatch({ type: types.SEND_CREATE_TODO_SUCCESS, payload: event });
+                dispatch({ type: types.TX_REMOVE, payload: { tx: event.transactionHash } });
                 break;
 
               case 'TodoUpdated':
                 dispatch({ type: types.SEND_UPDATE_TODO_SUCCESS, payload: event });
+                dispatch({ type: types.TX_REMOVE, payload: { tx: event.transactionHash } });
                 break;
 
               default:
@@ -103,6 +107,7 @@ export const applyMiddleware = dispatch => async action => {
       const { accounts } = web3Context;
       contract.methods.createList(title).send({ from: accounts[0] }, (err, tx) => {
         dispatch({ type: types.SEND_CREATE_LIST_STARTED, payload: { tx, title } });
+        dispatch({ type: types.TX_ADD, payload: { tx } });
       });
       return accounts;
     }
@@ -122,7 +127,8 @@ export const applyMiddleware = dispatch => async action => {
       const { web3Context, contract, listTamplate } = state;
       const { accounts } = web3Context;
       contract.methods.createTodo(listId, name).send({ from: accounts[0] }, (err, tx) => {
-        dispatch({ type: types.SEND_CREATE_TODO_STARTED, payload: { tx } });
+        dispatch({ type: types.TX_ADD, payload: { tx } });
+
       });
       return name;
     }

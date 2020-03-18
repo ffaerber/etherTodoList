@@ -18,6 +18,7 @@ import {
   Heading,
   Modal
 } from "rimble-ui";
+import Transaction from '../Transaction';
 
 
 export default function ListDetail() {
@@ -26,6 +27,7 @@ export default function ListDetail() {
 
   const [todoName, setTodoName] = useState("");
   const [list, setList] = useState({id: listId, name: 'loading'});
+  const [txs, setTxs] = useState([]);
 
   useEffect(() => {
     actions.callList(listId)
@@ -36,7 +38,9 @@ export default function ListDetail() {
     setList({...list, ...newList})
   }, [state.contract, state.lists, listId]);
 
-
+  useEffect(() => {
+    setTxs(state.txs)
+  }, [state.txs]);
 
 
 
@@ -55,10 +59,32 @@ export default function ListDetail() {
 
 
   return (
+      <Box>
+        <h1>{list.title}</h1>
+        <h4> totalTodos: {list.totalTodos}</h4>
 
-    <div>
-      <h3>{list.title}</h3>
-      <h4> totalTodos: {list.totalTodos}</h4>
+        <Form onSubmit={handleSubmit}>
+          <Flex>
+            <Box width={2/3}>
+              <Input
+                  type="text"
+                  required={true}
+                  placeholder="e.g. the thing"
+                  onChange={handleInput}
+                  value={todoName}
+                />
+            </Box>
+            <Box width={1/3}>
+              <Button mt={1} width={1} type="submit">Confirm</Button>
+            </Box>
+          </Flex>
+        </Form>
+
+        {txs ? (
+          txs.map(tx => ( <Transaction tx={tx}/> ))
+        ) : (
+          <div>no open tx found</div>
+        )}
 
         {list.todoIds ? (
           list.todoIds.map(todoId => ( <TodoItem listId={listId} todoId={todoId}/> ))
@@ -66,24 +92,6 @@ export default function ListDetail() {
           <div>no todos found</div>
         )}
 
-
-      <Form onSubmit={handleSubmit}>
-
-          <Field width={1} >
-            <Input
-              type="text"
-              size="small"
-              required={true}
-              placeholder="e.g. the thing"
-              onChange={handleInput}
-              value={todoName}
-            />
-          </Field>
-
-          <Button ml={3} type="submit">Confirm</Button>
-
-        </Form>
-
-    </div>
+      </Box>
   )
 }
