@@ -71,8 +71,8 @@ export default function List() {
         )}
 
         <Route path={match.path}>
-          {state.lists.map(list => (
-            <ListItem list={list} />
+          {state.listIds.map(listId => (
+            <ListItem listId={listId} />
           ))}
         </Route>
 

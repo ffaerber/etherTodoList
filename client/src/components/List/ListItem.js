@@ -4,15 +4,25 @@ import { MyContext } from '../../store/store';
 
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
 
-export default function ListItem({ list }) {
+export default function ListItem({ listId }) {
   const { actions, state } = useContext(MyContext);
   const match = useRouteMatch();
 
+  const [list, setList] = useState({id: listId, title: 'list loading...'});
+
   useEffect(() => {
-    if (list.id && !list.title){
-      actions.callList(list.id);
-    }
-  }, [list]);
+    actions.callList(listId);
+  }, [listId]);
+
+  useEffect(() => {
+    const newList = state.lists.find(x => x.id === listId)
+    setList({...list, ...newList})
+  }, [state.lists]);
+
+  const handleClick = e => {
+    e.preventDefault();
+    actions.sendDeleteList(listId);
+  };
 
   return (
     <Card key={list.id} mt={2}>
