@@ -39,7 +39,7 @@ export default function EtherTodoList() {
 
 
   return (
-    <Card maxWidth={"600px"} mx={"auto"} px={[3, 3, 4]}>
+    <Card maxWidth={"500px"} mx={"auto"}>
       <nav>
         <ul>
           <li>

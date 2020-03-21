@@ -1,20 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Flex, Box, Table, Card, Heading, Text } from 'rimble-ui';
+import { Flex, Box, Table, Card, Heading, Text, Input, Form } from 'rimble-ui';
 import { PublicAddress, Button } from 'rimble-ui';
 
 import { MyContext } from '../../store/store';
-import Modal from './Modal';
+
 import ListDetail from './ListDetail';
 import ListItem from './ListItem';
 
 import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
+import Transaction from '../Transaction';
 
 export default function List() {
   const { state, actions } = useContext(MyContext);
-  const [isOpen, setIsOpen] = useState(false);
+  const [listName, setListName] = useState("");
 
   let match = useRouteMatch();
-
 
   useEffect(() => {
     actions.callTotalLists();
@@ -26,44 +26,47 @@ export default function List() {
 
 
 
-  const closeModal = e => {
-    e.preventDefault();
-    setIsOpen(false);
+
+  const handleSubmit = evt => {
+    evt.preventDefault();
+    actions.sendCreateList(listName)
+  }
+
+  const handleInput = evt => {
+    setListName(evt.target.value);
   };
 
-  const openModal = e => {
-    e.preventDefault();
-    setIsOpen(true);
-  };
 
   return (
-    <div>
-      <Modal isOpen={isOpen} closeModal={closeModal} />
 
-      <Flex >
+    <Box>
+      <h1>Todos</h1>
 
-        <Route path={match.path}>
-          <Box width={[1, 0.5]}>
-            <Button onClick={openModal}>New List</Button>
-            <ul>
-              {state.listIds.map(listId => (
-                <ListItem listId={listId} />
-              ))}
-            </ul>
+      <Form onSubmit={handleSubmit}>
+        <Flex>
+          <Box width={2/3}>
+            <Input
+                type="text"
+                required={true}
+                placeholder="e.g. the thing"
+                onChange={handleInput}
+                value={listName}
+              />
           </Box>
-        </Route>
+          <Box width={1/3}>
+            <Button mt={1} width={1} type="submit">Confirm</Button>
+          </Box>
+        </Flex>
+      </Form>
 
-        {/* <Switch>
-          <Route path={`/list/:listId`}>
-            <Box width={[1, 0.5]} bg="#f2f2f8">
-              <ListDetail/>
-            </Box>
-          </Route>
-        </Switch> */}
+      <Transaction/>
 
-      </Flex>
+      <Route path={match.path}>
+        {state.listIds.map(listId => (
+          <ListItem listId={listId} />
+        ))}
+      </Route>
 
-
-    </div>
-  );
+    </Box>
+  )
 }

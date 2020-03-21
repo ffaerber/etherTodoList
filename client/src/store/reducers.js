@@ -10,6 +10,7 @@ const initialState = {
   listIds: [],
   lists: [],
   todos: [],
+  txs: [],
   error: ''
 };
 
@@ -37,6 +38,19 @@ const reducer = (state = initialState, action) => {
       return { ...state, totalLists: action.payload };
     }
 
+    case types.TX_ADD:{
+      const newTx = {...action.payload}
+      const oldTxs = state.txs.slice();
+      const txs = [...oldTxs, newTx ]
+      return { ...state, txs };
+    }
+
+    case types.TX_REMOVE:{
+      const newTx = {...action.payload}
+      const oldTxs = state.txs.slice();
+      const txs = oldTxs.filter(t => t.tx !== newTx.tx);
+      return { ...state, txs };
+    }
 
     case types.CALL_LIST_IDS_SUCCESS:{
       const listIds = action.payload
