@@ -27,7 +27,6 @@ export default function ListDetail() {
 
   const [todoName, setTodoName] = useState("");
   const [list, setList] = useState({id: listId, name: 'loading'});
-  const [txs, setTxs] = useState([]);
 
   useEffect(() => {
     actions.callList(listId)
@@ -37,12 +36,6 @@ export default function ListDetail() {
     const newList = state.lists.find(x => x.id === listId )
     setList({...list, ...newList})
   }, [state.contract, state.lists, listId]);
-
-  useEffect(() => {
-    setTxs(state.txs)
-  }, [state.txs]);
-
-
 
   const handleSubmit = evt => {
     evt.preventDefault();
@@ -61,7 +54,6 @@ export default function ListDetail() {
   return (
       <Box>
         <h1>{list.title}</h1>
-        <h4> totalTodos: {list.totalTodos}</h4>
 
         <Form onSubmit={handleSubmit}>
           <Flex>
@@ -80,11 +72,7 @@ export default function ListDetail() {
           </Flex>
         </Form>
 
-        {txs ? (
-          txs.map(tx => ( <Transaction tx={tx}/> ))
-        ) : (
-          <div>no open tx found</div>
-        )}
+        <Transaction/>
 
         {list.todoIds ? (
           list.todoIds.map(todoId => ( <TodoItem listId={listId} todoId={todoId}/> ))

@@ -13,10 +13,8 @@ import Transaction from '../Transaction';
 export default function List() {
   const { state, actions } = useContext(MyContext);
   const [listName, setListName] = useState("");
-  const [txs, setTxs] = useState([]);
 
   let match = useRouteMatch();
-
 
   useEffect(() => {
     actions.callTotalLists();
@@ -26,9 +24,6 @@ export default function List() {
     actions.callListIds();
   }, [state.totalLists]);
 
-  useEffect(() => {
-    setTxs(state.txs)
-  }, [state.txs]);
 
 
 
@@ -64,17 +59,13 @@ export default function List() {
         </Flex>
       </Form>
 
-        {txs ? (
-          txs.map(tx => ( <Transaction tx={tx}/> ))
-        ) : (
-          <div>no open tx found</div>
-        )}
+      <Transaction/>
 
-        <Route path={match.path}>
-          {state.listIds.map(listId => (
-            <ListItem listId={listId} />
-          ))}
-        </Route>
+      <Route path={match.path}>
+        {state.listIds.map(listId => (
+          <ListItem listId={listId} />
+        ))}
+      </Route>
 
     </Box>
   )
