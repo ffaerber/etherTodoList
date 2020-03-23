@@ -7,30 +7,20 @@ export default function Transaction() {
   const [txs, setTxs] = useState([]);
 
   useEffect(() => {
-    setTxs(state.txs)
+    setTxs(state.txs);
   }, [state.txs]);
 
-
-  return (
-    <div>
-      {txs ? (
-        txs.map(tx => ( <TransactionMessage tx={tx}/> ))
-      ) : (
-        <div>no open tx found</div>
-      )}
-    </div>
-  )
+  return <div>{txs ? txs.map(tx => <TransactionMessage key={tx.tx} tx={tx} />) : <div>no open tx found</div>}</div>;
 }
 
-
-const TransactionMessage = ({tx}) => {
+const TransactionMessage = ({ tx }) => {
   return (
-      <ToastMessage
-        message={"Transaction started"}
-        secondaryMessage={"Check on its progress using Etherscan"}
-        my={3}
-        actionText={"Check"}
-        actionHref={"#!"}
-      />
-  )
-}
+    <ToastMessage
+      message={'Transaction started'}
+      secondaryMessage={'Check on its progress using Etherscan'}
+      my={3}
+      actionText={'Check'}
+      actionHref={'#!'}
+    />
+  );
+};

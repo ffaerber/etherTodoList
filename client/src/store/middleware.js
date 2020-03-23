@@ -71,6 +71,7 @@ export const applyMiddleware = dispatch => async action => {
           return contract;
         }
       }
+      break;
     }
 
     case types.CALL_TOTAL_LISTS: {
@@ -136,8 +137,10 @@ export const applyMiddleware = dispatch => async action => {
 
     case types.SEND_UPDATE_TODO: {
       const { state, todo } = action.payload;
-      const { web3Context, contract, listTamplate } = state;
-      const { accounts } = web3Context;
+      const {
+        web3Context: { accounts },
+        contract,
+      } = state;
       contract.methods.updateTodo( todo.listId, todo.id, todo.title, todo.done ).send({ from: accounts[0] }, (err, tx) => {
         dispatch({ type: types.TX_ADD, payload: { tx } });
       });
