@@ -4,4 +4,4 @@ init:
 	npx oz create
 
 t:
-	npx oz upgrade && npm test
+	npx oz upgrade --all --network development  && npm test

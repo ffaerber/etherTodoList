@@ -9,6 +9,7 @@ contract EtherTodoList is Initializable, Ownable {
     struct Todo {
         uint256 id;
         string title;
+        bool done;
         bool active;
         uint256 date;
         address owner;
@@ -107,13 +108,20 @@ contract EtherTodoList is Initializable, Ownable {
     function getTodo(uint256 listId, uint256 todoId)
         external
         view
-        returns (uint256 id, string memory title, uint256 date, address owner)
+        returns (
+            uint256 id,
+            string memory title,
+            bool done,
+            uint256 date,
+            address owner
+        )
     {
         List storage list = lists[listId];
         require(list.exists, "List does not exist.");
         require(list.todos[todoId].exists, "todo does not exist.");
         Todo memory todo = list.todos[todoId];
-        return (todo.id, todo.title, todo.date, todo.owner);
+        return (todo.id, todo.title, todo.done, todo.date, todo.owner);
+
     }
 
     function createTodo(uint256 listId, string calldata title) external {
@@ -129,6 +137,7 @@ contract EtherTodoList is Initializable, Ownable {
         Todo memory todo = Todo({
             id: todoId,
             title: title,
+            done: false,
             active: true,
             date: now,
             owner: msg.sender,
@@ -140,19 +149,22 @@ contract EtherTodoList is Initializable, Ownable {
         emit TodoCreated(listId, todoId);
     }
 
-    function updateTodo(uint256 listId, uint256 todoId, string calldata newName)
-        external
-        returns (bool success)
-    {
+    function updateTodo(
+        uint256 listId,
+        uint256 todoId,
+        string calldata title,
+        bool done
+    ) external returns (bool success) {
         List storage list = lists[listId];
         require(list.exists, "List does not exist.");
-        require(Validate.title(newName), "newName is not valid");
+        require(Validate.title(title), "title is not valid");
         require(
             list.owner == msg.sender || owner() == msg.sender,
             "you are not allowed to do that."
         );
-        list.todos[todoId].title = newName;
-        emit TodoCreated(listId, todoId);
+        list.todos[todoId].title = title;
+        list.todos[todoId].done = done;
+        emit TodoUpdatet(listId, todoId);
         return true;
     }
 
