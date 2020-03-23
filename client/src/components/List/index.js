@@ -12,7 +12,7 @@ import Transaction from '../Transaction';
 
 export default function List() {
   const { state, actions } = useContext(MyContext);
-  const [listName, setListName] = useState("");
+  const [listName, setListName] = useState('');
 
   let match = useRouteMatch();
 
@@ -24,49 +24,39 @@ export default function List() {
     actions.callListIds();
   }, [state.totalLists]);
 
-
-
-
   const handleSubmit = evt => {
     evt.preventDefault();
-    actions.sendCreateList(listName)
-  }
+    actions.sendCreateList(listName);
+  };
 
   const handleInput = evt => {
     setListName(evt.target.value);
   };
 
-
   return (
-
     <Box>
       <h1>Todos</h1>
 
       <Form onSubmit={handleSubmit}>
         <Flex>
-          <Box width={2/3}>
-            <Input
-                type="text"
-                required={true}
-                placeholder="e.g. the thing"
-                onChange={handleInput}
-                value={listName}
-              />
+          <Box width={2 / 3}>
+            <Input type="text" required={true} placeholder="e.g. the thing" onChange={handleInput} value={listName} />
           </Box>
-          <Box width={1/3}>
-            <Button mt={1} width={1} type="submit">Confirm</Button>
+          <Box width={1 / 3}>
+            <Button mt={1} width={1} type="submit">
+              Confirm
+            </Button>
           </Box>
         </Flex>
       </Form>
 
-      <Transaction/>
+      <Transaction />
 
       <Route path={match.path}>
         {state.listIds.map(listId => (
-          <ListItem listId={listId} />
+          <ListItem key={listId} listId={listId} />
         ))}
       </Route>
-
     </Box>
-  )
+  );
 }

@@ -2,44 +2,42 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Checkbox, Field, Form } from 'rimble-ui';
 import { MyContext } from '../../store/store';
 
-import {
-  Box,
-  Flex,
-  Card
-} from "rimble-ui";
+import { Box, Flex, Card } from 'rimble-ui';
 
+import styles from './TodoItem.module.css';
 
 export default function TodoItem({ listId, todoId }) {
   const { actions, state } = useContext(MyContext);
-  const [todo, setTodo] = useState({id: todoId});
+  const [todo, setTodo] = useState({ id: todoId, done: false });
 
   useEffect(() => {
     actions.callTodo(listId, todoId);
-  }, [ state.lists ]);
+  }, [state.lists]);
 
   useEffect(() => {
-    const findTodo = state.todos.find(x => x.id === todoId)
-    const newTodo = {...todo, ...findTodo}
-    console.log(newTodo)
-    setTodo(newTodo)
+    const findTodo = state.todos.find(x => x.id === todoId);
+    const newTodo = { ...todo, ...findTodo };
+    setTodo(newTodo);
   }, [state.todos]);
 
   const handleCheckbox = e => {
-    const newTodo = {...todo, done: !todo.done }
-    console.log(newTodo)
-    actions.sendUpdateTodo(newTodo)
+    e.preventDefault();
+    const newTodo = { ...todo, done: !todo.done };
+    console.log(newTodo);
+    actions.sendUpdateTodo(newTodo);
   };
 
   return (
-    <Card key={todo.id} mt={2}>
-
-        {todo.done ? (
-          <Checkbox checked label={todo.title} onClick={handleCheckbox} />
-        ) : (
-          <Checkbox label={todo.title} onClick={handleCheckbox} />
-        )}
-
-
+    <Card mt={2}>
+      <input
+        className={styles.checkboxFix}
+        id={`todo_checkbox_${todo.id}`}
+        type="checkbox"
+        checked={todo.done}
+        value={todo.done}
+        onChange={handleCheckbox}
+      />
+      <label htmlFor={`todo_checkbox_${todo.id}`}>{todo.title}</label>
     </Card>
   );
 }
