@@ -62,4 +62,11 @@ export const useActions = (state, dispatch) => ({
     }
   },
 
+  sendUpdateTodo: (todo) => {
+    if(state.contract){
+      dispatch({ type: types.SEND_UPDATE_TODO, payload: {state, todo} })
+    }
+  },
+
+
 })

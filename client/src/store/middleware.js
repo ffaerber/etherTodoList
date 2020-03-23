@@ -134,6 +134,16 @@ export const applyMiddleware = dispatch => async action => {
     }
 
 
+    case types.SEND_UPDATE_TODO: {
+      const { state, todo } = action.payload;
+      const { web3Context, contract, listTamplate } = state;
+      const { accounts } = web3Context;
+      contract.methods.updateTodo( todo.listId, todo.id, todo.title, todo.done ).send({ from: accounts[0] }, (err, tx) => {
+        dispatch({ type: types.TX_ADD, payload: { tx } });
+      });
+      return todo;
+    }
+
 
     default:
       dispatch(action);
