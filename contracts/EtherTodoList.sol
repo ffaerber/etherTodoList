@@ -33,10 +33,10 @@ contract EtherTodoList is Initializable, Ownable {
     mapping(uint256 => List) public lists;
 
     event ListCreated(uint256 listId);
-    event ListUpdatet(uint256 listId);
+    event ListUpdated(uint256 listId);
 
     event TodoCreated(uint256 listId, uint256 todoId);
-    event TodoUpdatet(uint256 listId, uint256 todoId);
+    event TodoUpdated(uint256 listId, uint256 todoId);
 
     function initialize(address sender) public initializer {
         Ownable.initialize(sender);
@@ -101,7 +101,7 @@ contract EtherTodoList is Initializable, Ownable {
         );
         require(Validate.title(title), "title is not valid");
         list.title = title;
-        emit ListUpdatet(listId);
+        emit ListUpdated(listId);
         return true;
     }
 
@@ -164,7 +164,7 @@ contract EtherTodoList is Initializable, Ownable {
         );
         list.todos[todoId].title = title;
         list.todos[todoId].done = done;
-        emit TodoUpdatet(listId, todoId);
+        emit TodoUpdated(listId, todoId);
         return true;
     }
 

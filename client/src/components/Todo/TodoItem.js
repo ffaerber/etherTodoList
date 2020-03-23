@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button } from 'rimble-ui';
+import { Button, Checkbox, Field, Form } from 'rimble-ui';
 import { MyContext } from '../../store/store';
 
 import {
@@ -11,22 +11,35 @@ import {
 
 export default function TodoItem({ listId, todoId }) {
   const { actions, state } = useContext(MyContext);
-
-  const [todo, setTodo] = useState({id: todoId, title: 'todo loading...'});
+  const [todo, setTodo] = useState({id: todoId});
 
   useEffect(() => {
     actions.callTodo(listId, todoId);
   }, [ state.lists ]);
 
   useEffect(() => {
-    const newTodo = state.todos.find(x => x.id === todoId)
-    setTodo({...todo, ...newTodo})
+    const findTodo = state.todos.find(x => x.id === todoId)
+    const newTodo = {...todo, ...findTodo}
+    console.log(newTodo)
+    setTodo(newTodo)
   }, [state.todos]);
 
+  const handleCheckbox = e => {
+    const newTodo = {...todo, done: !todo.done }
+    console.log(newTodo)
+    actions.sendUpdateTodo(newTodo)
+  };
 
   return (
     <Card key={todo.id} mt={2}>
-      {todo.title}
+
+        {todo.done ? (
+          <Checkbox checked label={todo.title} onClick={handleCheckbox} />
+        ) : (
+          <Checkbox label={todo.title} onClick={handleCheckbox} />
+        )}
+
+
     </Card>
   );
 }
