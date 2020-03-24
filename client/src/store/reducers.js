@@ -82,6 +82,20 @@ const reducer = (state = initialState, action) => {
       };
     }
 
+
+
+    case types.SEND_UPDATE_TODO_SUCCESS: {
+      const { returnValues } = action.payload;
+      const newTodo = returnValues;
+      const oldTodo = { ...state.todos.find(x => x.id === newTodo.id) };
+      return {
+        ...state,
+        todos: state.todos.map(oldTodo => (oldTodo.id == newTodo.id ? { ...newTodo } : oldTodo)),
+      };
+    }
+
+
+
     default:
       return state;
   }

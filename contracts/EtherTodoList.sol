@@ -14,6 +14,7 @@ contract EtherTodoList is Initializable, Ownable {
         uint256 date;
         address owner;
         bool exists;
+        uint256 listId;
     }
 
     struct List {
@@ -36,7 +37,14 @@ contract EtherTodoList is Initializable, Ownable {
     event ListUpdated(uint256 listId);
 
     event TodoCreated(uint256 listId, uint256 todoId);
-    event TodoUpdated(uint256 listId, uint256 todoId);
+    event TodoUpdated(
+        uint256 id,
+        string title,
+        bool done,
+        uint256 date,
+        address owner,
+        uint256 listId
+    );
 
     function initialize(address sender) public initializer {
         Ownable.initialize(sender);
@@ -105,7 +113,7 @@ contract EtherTodoList is Initializable, Ownable {
         return true;
     }
 
-    function getTodo(uint256 listId, uint256 todoId)
+    function getTodo(uint256 _listId, uint256 _todoId)
         external
         view
         returns (
@@ -113,15 +121,22 @@ contract EtherTodoList is Initializable, Ownable {
             string memory title,
             bool done,
             uint256 date,
-            address owner
+            address owner,
+            uint256 listId
         )
     {
-        List storage list = lists[listId];
+        List storage list = lists[_listId];
         require(list.exists, "List does not exist.");
-        require(list.todos[todoId].exists, "todo does not exist.");
-        Todo memory todo = list.todos[todoId];
-        return (todo.id, todo.title, todo.done, todo.date, todo.owner);
-
+        require(list.todos[_todoId].exists, "todo does not exist.");
+        Todo memory todo = list.todos[_todoId];
+        return (
+            todo.id,
+            todo.title,
+            todo.done,
+            todo.date,
+            todo.owner,
+            todo.listId
+        );
     }
 
     function createTodo(uint256 listId, string calldata title) external {
@@ -141,7 +156,8 @@ contract EtherTodoList is Initializable, Ownable {
             active: true,
             date: now,
             owner: msg.sender,
-            exists: true
+            exists: true,
+            listId: listId
         });
         list.todos[todoId] = todo;
         list.todoIds.push(todoId);
@@ -164,7 +180,15 @@ contract EtherTodoList is Initializable, Ownable {
         );
         list.todos[todoId].title = title;
         list.todos[todoId].done = done;
-        emit TodoUpdated(listId, todoId);
+        Todo memory todo = list.todos[todoId];
+        emit TodoUpdated(
+            todo.id,
+            todo.title,
+            todo.done,
+            todo.date,
+            todo.owner,
+            todo.listId
+        );
         return true;
     }
 
