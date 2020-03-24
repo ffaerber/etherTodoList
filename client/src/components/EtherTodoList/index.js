@@ -1,41 +1,40 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch
-} from "react-router-dom";
+import { Switch, Route, Link } from 'react-router-dom';
 
+import { Card } from 'rimble-ui';
 
-import {
-  Box,
-  Flex,
-  Card
-} from "rimble-ui";
-
-import { MyProvider, MyContext } from '../../store/store';
+import { MyContext } from '../../store/store';
 
 import ListIndex from '../List/index';
 import ListDetail from '../List/ListDetail';
 import Web3Connect from '../Web3Connect';
 
-
 export default function EtherTodoList() {
-  const { state, actions } = useContext(MyContext);
-  const [isOpen, setIsOpen] = useState(false);
-
-  let match = useRouteMatch();
+  const { state, dispatch, actions, thunks } = useContext(MyContext);
 
   useEffect(() => {
-    actions.loadWeb3();
+    dispatch(thunks.loadWeb3());
   }, []);
 
   useEffect(() => {
-    actions.loadContract();
+    if (state.web3Context) {
+      dispatch(thunks.loadContract());
+    }
   }, [state.web3Context]);
 
+  if (state.loadingWeb3Context) {
+    return 'Loading web3...';
+  }
+  if (!state.web3Context) {
+    return 'Web3 loading failed, please, check network or try again later';
+  }
+  if (state.loadingContract) {
+    return 'Loading contract...';
+  }
+  if (!state.contract) {
+    return 'Contract loading failed, please, check network or try again later';
+  }
 
   return (
     <Box maxWidth={"500px"} mx={"auto"} >
@@ -44,9 +43,9 @@ export default function EtherTodoList() {
         <Route path={`/list/:listId`}>
           <ListDetail />
         </Route>
-        <Route path="/info">
+        {/*<Route path="/info">
           <Web3Connect />
-        </Route>
+        </Route>*/}
         <Route path="/">
           <ListIndex />
         </Route>
@@ -55,5 +54,3 @@ export default function EtherTodoList() {
     </Box>
   );
 }
-
-

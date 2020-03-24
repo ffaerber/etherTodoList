@@ -2,8 +2,9 @@ import types from './actionTypes';
 
 const initialState = {
   web3Context: null,
+  loadingWeb3Context: true,
   contract: null,
-  loading: false,
+  loadingContract: true,
   totalLists: 0,
   listIds: [],
   lists: [],
@@ -15,15 +16,15 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.LOAD_WEB3_SUCCESS: {
-      return { ...state, web3Context: action.payload };
+      return { ...state, web3Context: action.payload, loadingWeb3Context: false };
     }
 
     case types.LOAD_WEB3_FAIL: {
-      return { ...state };
+      return { ...state, web3Context: null, loadingWeb3Context: false };
     }
 
     case types.LOAD_CONTRACT_SUCCESS: {
-      return { ...state, contract: action.payload };
+      return { ...state, contract: action.payload, loadingContract: false };
     }
 
     case types.CALL_TOTAL_LISTS_SUCCESS: {
@@ -58,8 +59,9 @@ const reducer = (state = initialState, action) => {
     }
 
     case types.SEND_CREATE_LIST_SUCCESS: {
-      const { returnValues } = action.payload;
-      const { listId } = returnValues;
+      const {
+        returnValues: { listId },
+      } = action.payload;
       return { ...state, listIds: state.listIds.concat(listId) };
     }
 

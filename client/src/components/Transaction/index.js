@@ -1,16 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { ToastMessage } from 'rimble-ui';
 import { MyContext } from '../../store/store';
 
 export default function Transaction() {
-  const { state, actions } = useContext(MyContext);
-  const [txs, setTxs] = useState([]);
+  const { state, dispatch, actions, thunks } = useContext(MyContext);
 
-  useEffect(() => {
-    setTxs(state.txs);
-  }, [state.txs]);
-
-  return <div>{txs ? txs.map(tx => <TransactionMessage key={tx.tx} tx={tx} />) : <div>no open tx found</div>}</div>;
+  return (
+    <div>
+      {state.txs.map(tx => (
+        <TransactionMessage key={tx.tx} tx={tx} />
+      ))}
+    </div>
+  );
 }
 
 const TransactionMessage = ({ tx }) => {

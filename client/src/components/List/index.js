@@ -1,32 +1,33 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Flex, Box, Table, Card, Heading, Text, Input, Form } from 'rimble-ui';
-import { PublicAddress, Button } from 'rimble-ui';
-import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
+import { Flex, Box, Input, Form, Button } from 'rimble-ui';
 
 import { MyContext } from '../../store/store';
 
-import ListDetail from './ListDetail';
 import ListItem from './ListItem';
+
+import { Route, useRouteMatch } from 'react-router-dom';
 import Transaction from '../Transaction';
 import Footer from '../Footer';
 
 export default function List() {
-  const { state, actions } = useContext(MyContext);
+  const { state, dispatch, actions, thunks } = useContext(MyContext);
   const [listName, setListName] = useState('');
 
   let match = useRouteMatch();
 
   useEffect(() => {
-    actions.callTotalLists();
+    dispatch(thunks.callTotalLists());
   }, [state.contract]);
 
   useEffect(() => {
-    actions.callListIds();
+    if (state.totalLists > 0) {
+      dispatch(thunks.callListIds());
+    }
   }, [state.totalLists]);
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    actions.sendCreateList(listName);
+    dispatch(thunks.sendCreateList(listName));
   };
 
   const handleInput = evt => {
