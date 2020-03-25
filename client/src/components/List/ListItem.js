@@ -1,22 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Box, Icon, Text, Pill} from 'rimble-ui';
-import { MyContext } from '../../store/store';
+import { Card } from 'rimble-ui';
 
 import { Link } from 'react-router-dom';
 
-export default function ListItem({ listId }) {
-  const { actions, dispatch, state, thunks } = useContext(MyContext);
-
-  const [list, setList] = useState({ id: listId, title: 'list loading...' });
-
-  useEffect(() => {
-    dispatch(thunks.callList(listId));
-  }, [listId]);
-
-  useEffect(() => {
-    const newList = state.lists.find(x => x.id === listId);
-    setList({ ...list, ...newList });
-  }, [state.lists]);
+export default function ListItem({ list }) {
 
   return (
     <Link to={`list/${list.id}`}>

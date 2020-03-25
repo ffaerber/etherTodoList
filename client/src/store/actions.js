@@ -17,3 +17,6 @@ export const txAdd = payload => ({ type: types.TX_ADD, payload });
 export const txRemove = payload => ({ type: types.TX_REMOVE, payload });
 
 export const callListSuccess = payload => ({ type: types.CALL_LIST_SUCCESS, payload });
+
+export const callAllListSuccess = payload => ({ type: types.CALL_ALL_LIST_SUCCESS, payload });
+

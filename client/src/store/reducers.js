@@ -51,6 +51,12 @@ const reducer = (state = initialState, action) => {
       return { ...state, listIds };
     }
 
+
+    case types.CALL_ALL_LIST_SUCCESS: {
+      const lists = action.payload
+      return { ...state, lists: [...state.lists, ...lists] };
+    }
+
     case types.CALL_LIST_SUCCESS: {
       const list = { ...action.payload };
       let lists = state.lists.slice();

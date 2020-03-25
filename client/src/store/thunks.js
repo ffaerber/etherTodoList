@@ -8,6 +8,7 @@ import {
   callListIdsSuccess,
   sendCreateListSuccess,
   callListSuccess,
+  callAllListSuccess,
   txAdd,
   txRemove,
 } from './actions';
@@ -80,6 +81,16 @@ export const callListIds = () => async (dispatch, state) => {
   const { _ } = state.web3Context.lib.utils;
   const listIds = await Promise.all(_.times(state.totalLists, i => contract.methods.listIds(i).call()));
   dispatch(callListIdsSuccess(listIds));
+  return listIds;
+};
+
+
+export const callAllList = () => async (dispatch, state) => {
+  const { contract } = state;
+  const { _ } = state.web3Context.lib.utils;
+  const listIds = await Promise.all(_.times(state.totalLists, i => contract.methods.listIds(i).call()));
+  const lists = await Promise.all(listIds.map(i => contract.methods.getList(i).call()) );
+  dispatch(callAllListSuccess(lists));
   return listIds;
 };
 
