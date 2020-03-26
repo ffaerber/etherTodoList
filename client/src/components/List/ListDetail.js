@@ -51,17 +51,16 @@ export default function ListDetail() {
 
       <Header >
           <Link to="/">
-            <Button icon="ArrowBack" mr={3}>
+            <Button.Text icon="ArrowBack" mt={3}>
               Lists
-            </Button>
+            </Button.Text>
           </Link>
+          <Heading as={"h2"} mt={3} ml={3}>
+            {list.title}
+          </Heading>
       </Header>
 
-      <Box pb={70} pt={60}>
-        <Heading as={"h1"} ml={3}>
-          {list.title}
-        </Heading>
-
+      <Box pb={70} pt={140}>
         {list.todoIds ? (
           list.todoIds.map(todoId => <TodoItem key={todoId} listId={listId} todoId={todoId} />)
         ) : (

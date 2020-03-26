@@ -38,7 +38,7 @@ export default function EtherTodoList() {
 
 
   return (
-    <Box maxWidth={"500px"} mx={"auto"}>
+    <Box maxWidth={"500px"} mx={"auto"} >
 
       <Switch>
         <Route path={`/list/:listId`}>
