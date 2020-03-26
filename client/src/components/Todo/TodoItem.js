@@ -28,7 +28,7 @@ export default function TodoItem({ listId, todoId }) {
   };
 
   return (
-    <Card mt={2}>
+    <Box mt={2} bg="lightgray" m={2} p={10} fontSize={3} borderRadius={2}>
       <input
         className={styles.checkboxFix}
         id={`todo_checkbox_${todo.id}`}
@@ -38,6 +38,6 @@ export default function TodoItem({ listId, todoId }) {
         onChange={handleCheckbox}
       />
       <label htmlFor={`todo_checkbox_${todo.id}`}>{todo.title}</label>
-    </Card>
+    </Box>
   );
 }

@@ -17,7 +17,6 @@ import {
 
 import { MyProvider, MyContext } from '../../store/store';
 
-
 import ListIndex from '../List/index';
 import ListDetail from '../List/ListDetail';
 import Web3Connect from '../Web3Connect';
@@ -39,17 +38,8 @@ export default function EtherTodoList() {
 
 
   return (
-    <Card maxWidth={"500px"} mx={"auto"}>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/info">Info</Link>
-          </li>
-          <li>
-            <Link to="/">All Lists</Link>
-          </li>
-        </ul>
-      </nav>
+    <Box maxWidth={"500px"} mx={"auto"}>
+
       <Switch>
         <Route path={`/list/:listId`}>
           <ListDetail />
@@ -61,7 +51,8 @@ export default function EtherTodoList() {
           <ListIndex />
         </Route>
       </Switch>
-    </Card>
+
+    </Box>
   );
 }
 

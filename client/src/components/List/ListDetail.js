@@ -1,10 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { MyContext } from '../../store/store';
-import { useParams } from 'react-router-dom';
 import { EthAddress } from 'rimble-ui';
 import TodoItem from '../Todo/TodoItem';
+import Header from '../Header';
+import Footer from '../Footer';
+
 import { Box, Card, Form, Flex, Input, Select, Field, Button, Text, Checkbox, Radio, Heading, Modal } from 'rimble-ui';
 import Transaction from '../Transaction';
+
+import {
+  BrowserRouter as Router,
+  useParams,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch
+} from "react-router-dom";
 
 export default function ListDetail() {
   const { listId } = useParams();
@@ -37,28 +48,43 @@ export default function ListDetail() {
 
   return (
     <Box>
-      <h1>{list.title}</h1>
 
-      <Form onSubmit={handleSubmit}>
-        <Flex>
-          <Box width={2 / 3}>
-            <Input type="text" required={true} placeholder="e.g. the thing" onChange={handleInput} value={todoName} />
-          </Box>
-          <Box width={1 / 3}>
-            <Button mt={1} width={1} type="submit">
-              Confirm
+      <Header >
+          <Link to="/">
+            <Button icon="ArrowBack" mr={3}>
+              Lists
             </Button>
-          </Box>
-        </Flex>
-      </Form>
+          </Link>
+      </Header>
 
-      <Transaction />
+      <Box pb={70} pt={60}>
+        <Heading as={"h1"} ml={3}>
+          {list.title}
+        </Heading>
 
-      {list.todoIds ? (
-        list.todoIds.map(todoId => <TodoItem key={todoId} listId={listId} todoId={todoId} />)
-      ) : (
-        <div>no todos found</div>
-      )}
+        {list.todoIds ? (
+          list.todoIds.map(todoId => <TodoItem key={todoId} listId={listId} todoId={todoId} />)
+        ) : (
+          <div>no todos found</div>
+        )}
+      </Box>
+
+      <Footer>
+          <Form onSubmit={handleSubmit}>
+              <Flex>
+                <Box width={2 / 3}>
+                  <Input type="text" required={true} placeholder="e.g. Bananas" onChange={handleInput} value={todoName} />
+                </Box>
+                <Box width={1 / 3}>
+                  <Button mt={1} width={1} type="submit">
+                    Confirm
+                  </Button>
+                </Box>
+              </Flex>
+          </Form>
+
+        <Transaction />
+      </Footer>
     </Box>
   );
 }
