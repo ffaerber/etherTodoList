@@ -8,6 +8,7 @@ import {
   callListIdsSuccess,
   sendCreateListSuccess,
   callListSuccess,
+  callTodoSuccess,
   callAllListSuccess,
   txAdd,
   txRemove,
@@ -105,4 +106,11 @@ export const callList = listId => async (dispatch, { contract }) => {
   const list = await contract.methods.getList(listId).call();
   dispatch(callListSuccess(list));
   return list;
+};
+
+
+export const callTodo = (listId, todoId) => async (dispatch, { contract }) => {
+  const todo = await contract.methods.getTodo(listId, todoId).call();
+  dispatch(callTodoSuccess(todo));
+  return todo;
 };

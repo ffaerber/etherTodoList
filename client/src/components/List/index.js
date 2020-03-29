@@ -54,7 +54,6 @@ export default function List() {
   }
 
   useEffect(() => {
-    console.log(state.lists)
     setLists(state.lists.sort(compareValues('title', 'desc')))
   }, [state.lists]);
 
@@ -72,8 +71,8 @@ export default function List() {
 
       <Box pb={70} pt={20}>
         <Route path={match.path}>
-          {state.listIds.map(listId => (
-            <ListItem key={listId} listId={listId} />
+          {lists.map(list => (
+            <ListItem key={list.id} list={list} />
           ))}
         </Route>
       </Box>

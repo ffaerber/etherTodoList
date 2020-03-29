@@ -54,7 +54,7 @@ const reducer = (state = initialState, action) => {
 
     case types.CALL_ALL_LIST_SUCCESS: {
       const lists = action.payload
-      return { ...state, lists: [...state.lists, ...lists] };
+      return { ...state, lists };
     }
 
     case types.CALL_LIST_SUCCESS: {
@@ -72,10 +72,9 @@ const reducer = (state = initialState, action) => {
     }
 
     case types.CALL_TODO_SUCCESS: {
-      const { listId, todo } = action.payload;
-      const newTodo = { listId, ...todo };
+      const todo = action.payload;
       let todos = state.todos.slice();
-      todos.splice(newTodo.id, 0, newTodo);
+      todos.splice(todo.id, 0, todo);
       return { ...state, todos };
     }
 

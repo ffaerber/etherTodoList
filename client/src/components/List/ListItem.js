@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Card } from 'rimble-ui';
+import { Card, Box, Text, Icon } from 'rimble-ui';
 
 import { Link } from 'react-router-dom';
 
