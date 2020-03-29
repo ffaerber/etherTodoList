@@ -60,7 +60,8 @@ const reducer = (state = initialState, action) => {
     case types.CALL_LIST_SUCCESS: {
       const list = { ...action.payload };
       let lists = state.lists.slice();
-      lists.splice(list.id, 0, list);
+      const index = lists.findIndex(l => l.id === list.id)
+      lists.splice(index, 1, list);
       return { ...state, lists };
     }
 
