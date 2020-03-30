@@ -3,11 +3,12 @@ import { Button, Checkbox, Field, Form, Box, Flex, Card, Text, Icon } from 'rimb
 import { MyContext } from '../../store/store';
 
 export default function TodoItem({ listId, todoId }) {
-  const { actions, state } = useContext(MyContext);
+  const { state, dispatch, actions, thunks } = useContext(MyContext);
   const [todo, setTodo] = useState({ id: todoId, done: false });
 
+
   useEffect(() => {
-    actions.callTodo(listId, todoId);
+    dispatch(thunks.callTodo(listId, todoId));
   }, [state.lists]);
 
   useEffect(() => {
@@ -19,8 +20,7 @@ export default function TodoItem({ listId, todoId }) {
   const handleCheckbox = e => {
     e.preventDefault();
     const newTodo = { ...todo, done: !todo.done };
-    console.log(newTodo);
-    actions.sendUpdateTodo(newTodo);
+    dispatch(thunks.sendUpdateTodo(newTodo));
   };
 
   return (

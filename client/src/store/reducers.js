@@ -2,8 +2,9 @@ import types from './actionTypes';
 
 const initialState = {
   web3Context: null,
+  loadingWeb3Context: true,
   contract: null,
-  loading: false,
+  loadingContract: true,
   totalLists: 0,
   listIds: [],
   lists: [],
@@ -15,15 +16,15 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.LOAD_WEB3_SUCCESS: {
-      return { ...state, web3Context: action.payload };
+      return { ...state, web3Context: action.payload, loadingWeb3Context: false };
     }
 
     case types.LOAD_WEB3_FAIL: {
-      return { ...state };
+      return { ...state, web3Context: null, loadingWeb3Context: false };
     }
 
     case types.LOAD_CONTRACT_SUCCESS: {
-      return { ...state, contract: action.payload };
+      return { ...state, contract: action.payload, loadingContract: false };
     }
 
     case types.CALL_TOTAL_LISTS_SUCCESS: {
@@ -50,24 +51,33 @@ const reducer = (state = initialState, action) => {
       return { ...state, listIds };
     }
 
+
+    case types.CALL_ALL_LIST_SUCCESS: {
+      const lists = action.payload
+      return { ...state, lists };
+    }
+
     case types.CALL_LIST_SUCCESS: {
       const list = { ...action.payload };
       let lists = state.lists.slice();
-      lists.splice(list.id, 0, list);
+      const index = lists.findIndex(l => l.id === list.id)
+      lists.splice(index, 1, list);
       return { ...state, lists };
     }
 
     case types.SEND_CREATE_LIST_SUCCESS: {
-      const { returnValues } = action.payload;
-      const { listId } = returnValues;
-      return { ...state, listIds: state.listIds.concat(listId) };
+      const newList = action.payload.returnValues;
+      debugger
+      return {
+        ...state,
+        lists: [...state.lists, newList]
+      };
     }
 
     case types.CALL_TODO_SUCCESS: {
-      const { listId, todo } = action.payload;
-      const newTodo = { listId, ...todo };
+      const todo = action.payload;
       let todos = state.todos.slice();
-      todos.splice(newTodo.id, 0, newTodo);
+      todos.splice(todo.id, 0, todo);
       return { ...state, todos };
     }
 

@@ -19,14 +19,15 @@ import {
 
 export default function ListDetail() {
   const { listId } = useParams();
-  const { state, actions } = useContext(MyContext);
+  const { state, dispatch, actions, thunks } = useContext(MyContext);
 
   const [todoName, setTodoName] = useState('');
   const [list, setList] = useState({ id: listId, name: 'loading' });
 
   useEffect(() => {
-    actions.callList(listId);
+    dispatch(thunks.callList(listId));
   }, [state.contract, listId]);
+
 
   useEffect(() => {
     const newList = state.lists.find(x => x.id === listId);
@@ -35,7 +36,7 @@ export default function ListDetail() {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    actions.sendCreateTodo(listId, todoName);
+    dispatch(thunks.sendCreateTodo(listId, todoName));
   };
 
   const handleInput = evt => {

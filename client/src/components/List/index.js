@@ -1,32 +1,65 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Flex, Box, Table, Card, Heading, Text, Input, Form } from 'rimble-ui';
-import { PublicAddress, Button } from 'rimble-ui';
-import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
+import { Flex, Box, Input, Form, Button } from 'rimble-ui';
 
 import { MyContext } from '../../store/store';
 
-import ListDetail from './ListDetail';
 import ListItem from './ListItem';
+
+import { Route, useRouteMatch } from 'react-router-dom';
 import Transaction from '../Transaction';
 import Footer from '../Footer';
 
 export default function List() {
-  const { state, actions } = useContext(MyContext);
+  const { state, dispatch, actions, thunks } = useContext(MyContext);
   const [listName, setListName] = useState('');
-
+  const [lists, setLists] = useState([]);
   let match = useRouteMatch();
 
   useEffect(() => {
-    actions.callTotalLists();
+    dispatch(thunks.callTotalLists());
   }, [state.contract]);
 
+
   useEffect(() => {
-    actions.callListIds();
+    if (state.totalLists > 0) {
+      dispatch(thunks.callAllList());
+    }
   }, [state.totalLists]);
+
+
+
+
+  function compareValues(key, order = 'asc') {
+    return function innerSort(a, b) {
+      if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+        // property doesn't exist on either object
+        return 0;
+      }
+
+      const varA = (typeof a[key] === 'string')
+        ? a[key].toUpperCase() : a[key];
+      const varB = (typeof b[key] === 'string')
+        ? b[key].toUpperCase() : b[key];
+
+      let comparison = 0;
+      if (varA > varB) {
+        comparison = 1;
+      } else if (varA < varB) {
+        comparison = -1;
+      }
+      return (
+        (order === 'desc') ? (comparison * -1) : comparison
+      );
+    };
+  }
+
+  useEffect(() => {
+    setLists(state.lists.sort(compareValues('title', 'desc')))
+  }, [state.lists]);
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    actions.sendCreateList(listName);
+    dispatch(thunks.sendCreateList(listName));
   };
 
   const handleInput = evt => {
@@ -38,8 +71,8 @@ export default function List() {
 
       <Box pb={70} pt={20}>
         <Route path={match.path}>
-          {state.listIds.map(listId => (
-            <ListItem key={listId} listId={listId} />
+          {lists.map(list => (
+            <ListItem key={list.id} list={list} />
           ))}
         </Route>
       </Box>
