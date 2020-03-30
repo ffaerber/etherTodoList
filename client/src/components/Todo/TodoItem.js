@@ -20,8 +20,7 @@ export default function TodoItem({ listId, todoId }) {
   const handleCheckbox = e => {
     e.preventDefault();
     const newTodo = { ...todo, done: !todo.done };
-    console.log(newTodo);
-    actions.sendUpdateTodo(newTodo);
+    dispatch(thunks.sendUpdateTodo(newTodo));
   };
 
   return (

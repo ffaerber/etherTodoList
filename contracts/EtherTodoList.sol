@@ -33,8 +33,23 @@ contract EtherTodoList is Initializable, Ownable {
     uint256[] public listIds;
     mapping(uint256 => List) public lists;
 
-    event ListCreated(uint256 listId);
-    event ListUpdated(uint256 listId);
+    event ListCreated(
+        uint256 id,
+        string title,
+        uint256 date,
+        address owner,
+        uint256 totalTodos,
+        uint256[] todoIds
+    );
+
+    event ListUpdated(
+        uint256 id,
+        string title,
+        uint256 date,
+        address owner,
+        uint256 totalTodos,
+        uint256[] todoIds
+    );
 
     event TodoCreated(uint256 listId, uint256 todoId);
     event TodoUpdated(
@@ -93,8 +108,14 @@ contract EtherTodoList is Initializable, Ownable {
         listIds.push(listId);
         lists[listId] = list;
         totalLists++;
-
-        emit ListCreated(listId);
+        emit ListCreated(
+            list.id,
+            list.title,
+            list.date,
+            list.owner,
+            list.totalTodos,
+            list.todoIds
+        );
     }
 
     function updateList(uint256 listId, string calldata title)
@@ -109,7 +130,14 @@ contract EtherTodoList is Initializable, Ownable {
         );
         require(Validate.title(title), "title is not valid");
         list.title = title;
-        emit ListUpdated(listId);
+        emit ListUpdated(
+            list.id,
+            list.title,
+            list.date,
+            list.owner,
+            list.totalTodos,
+            list.todoIds
+        );
         return true;
     }
 

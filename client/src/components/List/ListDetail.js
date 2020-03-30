@@ -36,7 +36,7 @@ export default function ListDetail() {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    actions.sendCreateTodo(listId, todoName);
+    dispatch(thunks.sendCreateTodo(listId, todoName));
   };
 
   const handleInput = evt => {

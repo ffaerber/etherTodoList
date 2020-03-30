@@ -66,10 +66,12 @@ const reducer = (state = initialState, action) => {
     }
 
     case types.SEND_CREATE_LIST_SUCCESS: {
-      const {
-        returnValues: { listId },
-      } = action.payload;
-      return { ...state, listIds: state.listIds.concat(listId) };
+      const newList = action.payload.returnValues;
+      debugger
+      return {
+        ...state,
+        lists: [...state.lists, newList]
+      };
     }
 
     case types.CALL_TODO_SUCCESS: {
