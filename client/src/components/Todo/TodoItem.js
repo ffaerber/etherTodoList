@@ -24,7 +24,7 @@ export default function TodoItem({ listId, todoId }) {
   };
 
   return (
-    <Box bg="lightgray"  m={1} p={10} borderRadius={1} id={`todo_checkbox_${todo.id}`}>
+    <Box bg="lightgray"  mb={1} px={9} borderRadius={1} id={`todo_checkbox_${todo.id}`}>
       <Button.Text onClick={handleCheckbox} >
         <Text display={"flex"} color="black">
           <Icon name={todo.done ? "RadioButtonChecked" : "RadioButtonUnchecked"} mr={2} />

@@ -5,7 +5,7 @@ import TodoItem from '../Todo/TodoItem';
 import Header from '../Header';
 import Footer from '../Footer';
 
-import { Box, Card, Form, Flex, Input, Select, Field, Button, Text, Checkbox, Radio, Heading, Modal } from 'rimble-ui';
+import { Icon, Box, Card, Form, Flex, Input, Select, Field, Button, Text, Checkbox, Radio, Heading, Modal } from 'rimble-ui';
 import Transaction from '../Transaction';
 
 import {
@@ -50,18 +50,27 @@ export default function ListDetail() {
   return (
     <Box>
 
-      <Header >
-          <Link to="/">
-            <Button.Text icon="ArrowBack" mt={3}>
+      <Header>
+        <Flex mt={2}>
+
+          <Box width={1 / 3}>
+            <Button.Outline as={Link} to="/" icon="ArrowBack">
               Lists
-            </Button.Text>
-          </Link>
-          <Heading as={"h2"} mt={3} ml={3}>
-            {list.title}
-          </Heading>
+            </Button.Outline>
+          </Box>
+
+          <Box width={1 / 3} >
+            <Heading as={"h2"} textAlign='center' mt={2} >
+              {list.title}
+            </Heading>
+          </Box>
+
+
+
+        </Flex>
       </Header>
 
-      <Box pb={70} pt={140}>
+      <Box pb={1} pt={75}>
         {list.todoIds ? (
           list.todoIds.map(todoId => <TodoItem key={todoId} listId={listId} todoId={todoId} />)
         ) : (
