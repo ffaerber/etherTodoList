@@ -31,6 +31,9 @@ const reducer = (state = initialState, action) => {
       return { ...state, totalLists: action.payload };
     }
 
+
+
+
     case types.TX_ADD: {
       const newTx = { ...action.payload };
       if (!newTx.tx) return state;
@@ -45,6 +48,10 @@ const reducer = (state = initialState, action) => {
       const txs = oldTxs.filter(t => t.tx !== newTx.tx);
       return { ...state, txs };
     }
+
+
+
+
 
     case types.CALL_LIST_IDS_SUCCESS: {
       const listIds = action.payload;
@@ -67,7 +74,6 @@ const reducer = (state = initialState, action) => {
 
     case types.SEND_CREATE_LIST_SUCCESS: {
       const newList = action.payload.returnValues;
-      debugger
       return {
         ...state,
         lists: [...state.lists, newList]
@@ -82,10 +88,9 @@ const reducer = (state = initialState, action) => {
     }
 
     case types.SEND_CREATE_TODO_SUCCESS: {
-      const { returnValues } = action.payload;
-      const { listId, todoId } = returnValues;
-      const newList = { ...state.lists.find(x => x.id === listId) };
-      newList.todoIds.push(todoId);
+      const todo = action.payload.returnValues;
+      const newList = { ...state.lists.find(x => x.id === todo.listId) };
+      newList.todoIds.push(todo.id);
       return {
         ...state,
         lists: state.lists.map(oldList => (oldList.id == newList.id ? { ...oldList, ...newList } : oldList)),
