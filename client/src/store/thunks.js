@@ -43,22 +43,22 @@ export const loadContract = () => async (dispatch, state) => {
       contract.events.allEvents({}, (error, event) => {
         console.log(event);
         switch (event.event) {
-          case 'ListCreated':
+          case 'CreateList':
             dispatch(sendCreateListSuccess(event));
             dispatch(txRemove({ tx: event.transactionHash }));
             break;
 
-          case 'ListUpdated':
+          case 'UpdateList':
             dispatch(sendUpdateListSuccess(event));
             dispatch(txRemove({ tx: event.transactionHash }));
             break;
 
-          case 'TodoCreated':
+          case 'CreateTodo':
             dispatch(sendCreateTodoSuccess(event));
             dispatch(txRemove({ tx: event.transactionHash }));
             break;
 
-          case 'TodoUpdated':
+          case 'UpdateTodo':
             dispatch(sendUpdateTodoSuccess(event));
             dispatch(txRemove({ tx: event.transactionHash }));
             break;
@@ -74,6 +74,7 @@ export const loadContract = () => async (dispatch, state) => {
   }
 };
 
+
 export const callTotalLists = () => async (dispatch, state) => {
   const totalLists = await state.contract.methods.totalLists().call();
   dispatch(callTotalListsSuccess(Number.parseInt(totalLists)));
@@ -88,6 +89,12 @@ export const callListIds = () => async (dispatch, state) => {
   return listIds;
 };
 
+export const sendCreateList = title => (dispatch, { web3Context: { accounts }, contract }) => {
+  contract.methods.createList(title).send({ from: accounts[0] }, (err, tx) => {
+    dispatch(txAdd({ tx }));
+  });
+  return accounts;
+};
 
 export const callAllList = () => async (dispatch, state) => {
   const { contract } = state;
@@ -98,12 +105,15 @@ export const callAllList = () => async (dispatch, state) => {
   return listIds;
 };
 
-export const sendCreateList = title => (dispatch, { web3Context: { accounts }, contract }) => {
-  contract.methods.createList(title).send({ from: accounts[0] }, (err, tx) => {
-    dispatch(txAdd({ tx }));
-  });
-  return accounts;
+export const callList = listId => async (dispatch, { contract }) => {
+  const list = await contract.methods.getList(listId).call();
+  dispatch(callListSuccess(list));
+  return list;
 };
+
+
+
+
 
 export const sendCreateTodo = (listId, name) => (dispatch, { web3Context: { accounts }, contract }) => {
   contract.methods.createTodo(listId, name).send({ from: accounts[0] }, (err, tx) => {
@@ -112,21 +122,12 @@ export const sendCreateTodo = (listId, name) => (dispatch, { web3Context: { acco
   return accounts;
 };
 
-
-
 export const sendUpdateTodo = todo => (dispatch, { web3Context: { accounts }, contract }) => {
   contract.methods.updateTodo(todo.listId, todo.id, todo.title, todo.done).send({ from: accounts[0] }, (err, tx) => {
     dispatch(txAdd({ tx }));
   });
   return accounts;
 };
-
-export const callList = listId => async (dispatch, { contract }) => {
-  const list = await contract.methods.getList(listId).call();
-  dispatch(callListSuccess(list));
-  return list;
-};
-
 
 export const callTodo = (listId, todoId) => async (dispatch, { contract }) => {
   const todo = await contract.methods.getTodo(listId, todoId).call();
