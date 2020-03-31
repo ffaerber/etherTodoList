@@ -33,7 +33,7 @@ contract EtherTodoList is Initializable, Ownable {
     uint256[] public listIds;
     mapping(uint256 => List) public lists;
 
-    event ListCreated(
+    event CreateList(
         uint256 id,
         string title,
         uint256 date,
@@ -42,7 +42,7 @@ contract EtherTodoList is Initializable, Ownable {
         uint256[] todoIds
     );
 
-    event ListUpdated(
+    event UpdateList(
         uint256 id,
         string title,
         uint256 date,
@@ -51,8 +51,16 @@ contract EtherTodoList is Initializable, Ownable {
         uint256[] todoIds
     );
 
-    event TodoCreated(uint256 listId, uint256 todoId);
-    event TodoUpdated(
+    event CreateTodo(
+        uint256 id,
+        string title,
+        bool done,
+        uint256 date,
+        address owner,
+        uint256 listId
+    );
+
+    event UpdateTodo(
         uint256 id,
         string title,
         bool done,
@@ -108,7 +116,7 @@ contract EtherTodoList is Initializable, Ownable {
         listIds.push(listId);
         lists[listId] = list;
         totalLists++;
-        emit ListCreated(
+        emit CreateList(
             list.id,
             list.title,
             list.date,
@@ -130,7 +138,7 @@ contract EtherTodoList is Initializable, Ownable {
         );
         require(Validate.title(title), "title is not valid");
         list.title = title;
-        emit ListUpdated(
+        emit UpdateList(
             list.id,
             list.title,
             list.date,
@@ -190,7 +198,14 @@ contract EtherTodoList is Initializable, Ownable {
         list.todos[todoId] = todo;
         list.todoIds.push(todoId);
         list.totalTodos++;
-        emit TodoCreated(listId, todoId);
+        emit CreateTodo(
+            todo.id,
+            todo.title,
+            todo.done,
+            todo.date,
+            todo.owner,
+            todo.listId
+        );
     }
 
     function updateTodo(
@@ -209,7 +224,7 @@ contract EtherTodoList is Initializable, Ownable {
         list.todos[todoId].title = title;
         list.todos[todoId].done = done;
         Todo memory todo = list.todos[todoId];
-        emit TodoUpdated(
+        emit UpdateTodo(
             todo.id,
             todo.title,
             todo.done,

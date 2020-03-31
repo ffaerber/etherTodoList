@@ -39,25 +39,28 @@ export const applyMiddleware = dispatch => async action => {
             EtherTodoList.abi,
             deployedNetwork && deployedNetwork.address,
           );
+
+
           contract.events.allEvents({}, (error, event) => {
-            console.log(event)
+            // const { _ } = state.web3Context.lib.utils;
+            // console.log(_.snakeCase(event.event))
             switch (event.event) {
-              case 'ListCreated':
+              case 'CreateList':
                 dispatch({ type: types.SEND_CREATE_LIST_SUCCESS, payload: event });
                 dispatch({ type: types.TX_REMOVE, payload: { tx: event.transactionHash } });
                 break;
 
-              case 'ListUpdated':
+              case 'UpdateList':
                 dispatch({ type: types.SEND_UPDATE_LIST_SUCCESS, payload: event });
                 dispatch({ type: types.TX_REMOVE, payload: { tx: event.transactionHash } });
                 break;
 
-              case 'TodoCreated':
+              case 'CreateTodo':
                 dispatch({ type: types.SEND_CREATE_TODO_SUCCESS, payload: event });
                 dispatch({ type: types.TX_REMOVE, payload: { tx: event.transactionHash } });
                 break;
 
-              case 'TodoUpdated':
+              case 'UpdateTodo':
                 dispatch({ type: types.SEND_UPDATE_TODO_SUCCESS, payload: event });
                 dispatch({ type: types.TX_REMOVE, payload: { tx: event.transactionHash } });
                 break;
