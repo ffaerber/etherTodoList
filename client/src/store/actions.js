@@ -6,6 +6,8 @@ export const loadWeb3Fail = payload => ({ type: types.LOAD_WEB3_FAIL, payload })
 
 export const loadContractSuccess = payload => ({ type: types.LOAD_CONTRACT_SUCCESS, payload });
 
+export const loadContractFail = payload => ({ type: types.LOAD_CONTRACT_FAIL, payload });
+
 
 
 export const txAdd = payload => ({ type: types.TX_ADD, payload });

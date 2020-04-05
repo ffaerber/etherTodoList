@@ -1,9 +1,10 @@
-import { fromInjected } from '@openzeppelin/network';
+import {Web3Context, fromInjected } from '@openzeppelin/network';
 
 import {
   loadWeb3Success,
   loadWeb3Fail,
   loadContractSuccess,
+  loadContractFail,
   callTotalListsSuccess,
   callListIdsSuccess,
   sendCreateListSuccess,
@@ -28,10 +29,13 @@ export const loadContract = () => async (dispatch, state) => {
   let deployedNetwork = null;
   try {
     EtherTodoList = require('../../../contracts/EtherTodoList.sol');
-  } catch (e) {
-    console.log(e);
+  } catch (event) {
+    dispatch(loadContractFail(event));
   }
   await state.web3Context.lib.currentProvider.enable();
+  await state.web3Context.on(Web3Context.NetworkIdChangedEventName, () => { window.location.reload() });
+  await state.web3Context.on(Web3Context.AccountsChangedEventName, () => { window.location.reload() });
+  await state.web3Context.on(Web3Context.ConnectionChangedEventName, () => { window.location.reload() });
   const networkId = await state.web3Context.lib.eth.net.getId();
   if (EtherTodoList.networks) {
     deployedNetwork = EtherTodoList.networks[networkId.toString()];
@@ -73,7 +77,6 @@ export const loadContract = () => async (dispatch, state) => {
     }
   }
 };
-
 
 export const callTotalLists = () => async (dispatch, state) => {
   const totalLists = await state.contract.methods.totalLists().call();

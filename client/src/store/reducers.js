@@ -27,6 +27,10 @@ const reducer = (state = initialState, action) => {
       return { ...state, contract: action.payload, loadingContract: false };
     }
 
+    case types.LOAD_CONTRACT_FAIL: {
+      return { ...state, contract: null, loadingContract: false };
+    }
+
     case types.CALL_TOTAL_LISTS_SUCCESS: {
       return { ...state, totalLists: action.payload };
     }
