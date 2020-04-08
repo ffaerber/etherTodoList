@@ -1,7 +1,7 @@
 ## Getting Started
 
 1. globaly Install the cli for ganache, openzeppelin and truffle:
-        
+
         $ npm install -g truffle
         $ npm install -g ganache-cli
         $ npm install -g @openzeppelin/cli
@@ -42,5 +42,12 @@
    the following resources handy:
     * [starter-kits](https://docs.openzeppelin.com/starter-kits/)
     * [linking the contracts ethereum package](https://docs.openzeppelin.com/cli/2.7/dependencies#linking-the-contracts-ethereum-package)
-    
 
+
+11. Deploy
+
+        $ cd client
+        $ npm run build
+        $ cd ..
+        $ npx oz upgrade
+        $ make deploy
