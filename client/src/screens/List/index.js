@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Flex, Box, Input, Form, Button } from 'rimble-ui';
+import { Route, useRouteMatch } from 'react-router-dom';
 
 import { MyContext } from '../../store/store';
 
-import ListItem from './ListItem';
+import Transactions from '../../components/Transactions';
+import Footer from '../../components/Footer';
+import ListItem from '../../components/List/Item';
 
-import { Route, useRouteMatch } from 'react-router-dom';
-import Transaction from '../Transaction';
-import Footer from '../Footer';
-
-export default function List() {
+export default function ListIndex() {
   const { state, dispatch, actions, thunks } = useContext(MyContext);
   const [listName, setListName] = useState('');
   const [lists, setLists] = useState([]);
@@ -92,7 +91,7 @@ export default function List() {
           </Flex>
         </Form>
 
-        <Transaction />
+        <Transactions />
       </Footer>
 
 

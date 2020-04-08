@@ -3,7 +3,7 @@ import { Card, Box, Text, Icon } from 'rimble-ui';
 
 import { Link } from 'react-router-dom';
 
-export default function ListItem({ list }) {
+export default function Item({ list }) {
 
   return (
     <Link to={`list/${list.id}`}>

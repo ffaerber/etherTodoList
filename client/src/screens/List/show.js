@@ -1,12 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { MyContext } from '../../store/store';
-import { EthAddress } from 'rimble-ui';
-import TodoItem from '../Todo/TodoItem';
-import Header from '../Header';
-import Footer from '../Footer';
-
-import { Icon, Box, Card, Form, Flex, Input, Select, Field, Button, Text, Checkbox, Radio, Heading, Modal } from 'rimble-ui';
-import Transaction from '../Transaction';
+import { EthAddress, Icon, Box, Card, Form, Flex, Input, Select, Field, Button, Text, Checkbox, Radio, Heading, Modal } from 'rimble-ui';
 
 import {
   BrowserRouter as Router,
@@ -17,7 +10,16 @@ import {
   useRouteMatch
 } from "react-router-dom";
 
-export default function ListDetail() {
+import { MyContext } from '../../store/store';
+
+import TodoItem from '../../components/Todo/Item';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import Transactions from '../../components/Transactions';
+
+
+
+export default function ListShow() {
   const { listId } = useParams();
   const { state, dispatch, actions, thunks } = useContext(MyContext);
 
@@ -52,7 +54,6 @@ export default function ListDetail() {
 
       <Header>
         <Flex mt={2}>
-
           <Box width={1 / 3}>
             <Button.Outline as={Link} to="/" icon="ArrowBack">
               Lists
@@ -64,9 +65,6 @@ export default function ListDetail() {
               {list.title}
             </Heading>
           </Box>
-
-
-
         </Flex>
       </Header>
 
@@ -92,7 +90,7 @@ export default function ListDetail() {
               </Flex>
           </Form>
 
-        <Transaction />
+        <Transactions />
       </Footer>
     </Box>
   );

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { ToastMessage } from 'rimble-ui';
 import { MyContext } from '../../store/store';
 
-export default function Transaction() {
+export default function Transactions() {
   const { state, dispatch, actions, thunks } = useContext(MyContext);
 
   return (

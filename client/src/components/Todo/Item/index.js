@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Checkbox, Field, Form, Box, Flex, Card, Text, Icon } from 'rimble-ui';
-import { MyContext } from '../../store/store';
+import { MyContext } from '../../../store/store';
 
 export default function TodoItem({ listId, todoId }) {
   const { state, dispatch, actions, thunks } = useContext(MyContext);

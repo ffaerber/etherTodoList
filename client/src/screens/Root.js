@@ -1,14 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-
 import { Switch, Route, Link } from 'react-router-dom';
-
 import { Card, Box } from 'rimble-ui';
+import { MyContext } from '../store/store';
 
-import { MyContext } from '../../store/store';
-
-import ListIndex from '../List/index';
-import ListDetail from '../List/ListDetail';
-import Web3Connect from '../Web3Connect';
+import ListIndex from './List/index';
+import ListShow from './List/show';
+import Web3Connect from '../components/Web3Connect';
 
 export default function EtherTodoList() {
   const { state, dispatch, actions, thunks } = useContext(MyContext);
@@ -38,19 +35,21 @@ export default function EtherTodoList() {
 
   return (
     <Box maxWidth={"500px"} mx={"auto"} >
-
       <Switch>
-        <Route path={`/list/:listId`}>
-          <ListDetail />
-        </Route>
-        {/*<Route path="/info">
+
+        <Route path="/info">
           <Web3Connect />
-        </Route>*/}
+        </Route>
+
+        <Route path={`/list/:listId`}>
+          <ListShow />
+        </Route>
+
         <Route path="/">
           <ListIndex />
         </Route>
-      </Switch>
 
+      </Switch>
     </Box>
   );
 }
