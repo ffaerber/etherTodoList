@@ -12,12 +12,8 @@ describe('etherTodoList', function() {
   let etherTodoList;
 
   beforeEach(async () => {
-    etherTodoList = await EtherTodoList.new({ from: owner });
-    await etherTodoList.initialize(owner, { from: owner });
-  });
-
-  it('deployer is owner', async () => {
-    expect(await etherTodoList.owner()).to.equal(owner);
+    etherTodoList = await EtherTodoList.new();
+    await etherTodoList.initialize({ from: owner });
   });
 
   it('should have 0 lists after deploy', async () => {

@@ -1,11 +1,12 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.6.4;
 
 import {Validate} from "../libraries/Validate.sol";
 
-import "@openzeppelin/upgrades/contracts/Initializable.sol";
-import "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol";
+import "@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol";
+import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
 
-contract EtherTodoList is Initializable, Ownable {
+
+contract EtherTodoList is Initializable, OwnableUpgradeSafe {
     struct Todo {
         uint256 id;
         string title;
@@ -69,9 +70,7 @@ contract EtherTodoList is Initializable, Ownable {
         uint256 listId
     );
 
-    function initialize(address sender) public initializer {
-        Ownable.initialize(sender);
-    }
+    function initialize() public initializer {}
 
     function getList(uint256 listId)
         external
@@ -101,8 +100,7 @@ contract EtherTodoList is Initializable, Ownable {
         require(Validate.title(title), "title is not valid");
         uint256 listId = uint256(
             keccak256(abi.encodePacked(now, msg.sender, title))
-        ) %
-            9000000;
+        ) % 9000000;
         List memory list = List({
             id: listId,
             title: title,
@@ -182,8 +180,7 @@ contract EtherTodoList is Initializable, Ownable {
 
         uint256 todoId = uint256(
             keccak256(abi.encodePacked(now, msg.sender, title))
-        ) %
-            9000000;
+        ) % 9000000;
 
         Todo memory todo = Todo({
             id: todoId,
@@ -234,5 +231,4 @@ contract EtherTodoList is Initializable, Ownable {
         );
         return true;
     }
-
 }

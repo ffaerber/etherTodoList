@@ -1,11 +1,11 @@
 {
   "contracts": {
     "EtherTodoList": {
-      "address": "0x8EB2Df04BD8c835f1957BE85B412bc7E16B6B1e9",
-      "constructorCode": "6080604052612c3a806100136000396000f3fe",
-      "bodyBytecodeHash": "ff09dd122e4ec0dbc54c8523d39dbed3ea3c1b46e2dfbad102cefed0ec47901b",
-      "localBytecodeHash": "be49811395f9dd5b8c88b22b48e07540f31d0d8e6409877eb3b5868a71d9a49d",
-      "deployedBytecodeHash": "be49811395f9dd5b8c88b22b48e07540f31d0d8e6409877eb3b5868a71d9a49d",
+      "address": "0x0ABc490E3453a4b9352845a03b6151b6aFBCe6Db",
+      "constructorCode": "608060405234801561001057600080fd5b50612a2b806100206000396000f3fe",
+      "bodyBytecodeHash": "e6935e6f2ec44bd7996b13da0b689b2b7e77ef6f7ade9efbdec73cb929072687",
+      "localBytecodeHash": "8a9dc6687b6a285d9b8238d6cb425b3dbd880aa361b0e56eabcad0fff52644dd",
+      "deployedBytecodeHash": "8a9dc6687b6a285d9b8238d6cb425b3dbd880aa361b0e56eabcad0fff52644dd",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -29,6 +29,13 @@
           "kind": "elementary",
           "label": "address"
         },
+        "t_array:49<t_uint256>": {
+          "id": "t_array:49<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "49",
+          "kind": "array",
+          "label": "uint256[49]"
+        },
         "t_array:dyn<t_uint256>": {
           "id": "t_array:dyn<t_uint256>",
           "valueType": "t_uint256",
@@ -43,57 +50,57 @@
           "members": [
             {
               "label": "id",
-              "astId": 251,
+              "astId": 276,
               "type": "t_uint256",
-              "src": "497:10:3"
+              "src": "525:10:3"
             },
             {
               "label": "title",
-              "astId": 253,
+              "astId": 278,
               "type": "t_string",
-              "src": "517:12:3"
+              "src": "545:12:3"
             },
             {
               "label": "active",
-              "astId": 255,
+              "astId": 280,
               "type": "t_bool",
-              "src": "539:11:3"
+              "src": "567:11:3"
             },
             {
               "label": "date",
-              "astId": 257,
+              "astId": 282,
               "type": "t_uint256",
-              "src": "560:12:3"
+              "src": "588:12:3"
             },
             {
               "label": "owner",
-              "astId": 259,
+              "astId": 284,
               "type": "t_address",
-              "src": "582:13:3"
+              "src": "610:13:3"
             },
             {
               "label": "exists",
-              "astId": 261,
+              "astId": 286,
               "type": "t_bool",
-              "src": "605:11:3"
+              "src": "633:11:3"
             },
             {
               "label": "totalTodos",
-              "astId": 263,
+              "astId": 288,
               "type": "t_uint256",
-              "src": "626:18:3"
+              "src": "654:18:3"
             },
             {
               "label": "todoIds",
-              "astId": 266,
+              "astId": 291,
               "type": "t_array:dyn<t_uint256>",
-              "src": "654:17:3"
+              "src": "682:17:3"
             },
             {
               "label": "todos",
-              "astId": 270,
+              "astId": 295,
               "type": "t_mapping<t_struct<EtherTodoList.Todo>>",
-              "src": "681:30:3"
+              "src": "709:30:3"
             }
           ]
         },
@@ -109,51 +116,51 @@
           "members": [
             {
               "label": "id",
-              "astId": 234,
+              "astId": 259,
               "type": "t_uint256",
-              "src": "300:10:3"
+              "src": "328:10:3"
             },
             {
               "label": "title",
-              "astId": 236,
+              "astId": 261,
               "type": "t_string",
-              "src": "320:12:3"
+              "src": "348:12:3"
             },
             {
               "label": "done",
-              "astId": 238,
+              "astId": 263,
               "type": "t_bool",
-              "src": "342:9:3"
+              "src": "370:9:3"
             },
             {
               "label": "active",
-              "astId": 240,
+              "astId": 265,
               "type": "t_bool",
-              "src": "361:11:3"
+              "src": "389:11:3"
             },
             {
               "label": "date",
-              "astId": 242,
+              "astId": 267,
               "type": "t_uint256",
-              "src": "382:12:3"
+              "src": "410:12:3"
             },
             {
               "label": "owner",
-              "astId": 244,
+              "astId": 269,
               "type": "t_address",
-              "src": "404:13:3"
+              "src": "432:13:3"
             },
             {
               "label": "exists",
-              "astId": 246,
+              "astId": 271,
               "type": "t_bool",
-              "src": "427:11:3"
+              "src": "455:11:3"
             },
             {
               "label": "listId",
-              "astId": 248,
+              "astId": 273,
               "type": "t_uint256",
-              "src": "448:14:3"
+              "src": "476:14:3"
             }
           ]
         },
@@ -173,67 +180,75 @@
       "storage": [
         {
           "contract": "Initializable",
-          "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol",
           "label": "initialized",
-          "astId": 157,
+          "astId": 49,
           "type": "t_bool",
-          "src": "757:24:2"
+          "src": "757:24:1"
         },
         {
           "contract": "Initializable",
-          "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol",
           "label": "initializing",
-          "astId": 159,
+          "astId": 51,
           "type": "t_bool",
-          "src": "876:25:2"
+          "src": "876:25:1"
         },
         {
           "contract": "Initializable",
-          "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol",
           "label": "______gap",
-          "astId": 221,
+          "astId": 116,
           "type": "t_array:50<t_uint256>",
-          "src": "1982:29:2"
+          "src": "1982:29:1"
         },
         {
-          "contract": "Ownable",
-          "path": "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol",
+          "contract": "ContextUpgradeSafe",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol",
+          "label": "__gap",
+          "astId": 43,
+          "type": "t_array:50<t_uint256>",
+          "src": "1277:25:0"
+        },
+        {
+          "contract": "OwnableUpgradeSafe",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol",
           "label": "_owner",
-          "astId": 39,
+          "astId": 128,
           "type": "t_address",
-          "src": "526:22:1"
+          "src": "651:22:2"
         },
         {
-          "contract": "Ownable",
-          "path": "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol",
-          "label": "______gap",
-          "astId": 152,
-          "type": "t_array:50<t_uint256>",
-          "src": "2471:29:1"
+          "contract": "OwnableUpgradeSafe",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol",
+          "label": "__gap",
+          "astId": 246,
+          "type": "t_array:49<t_uint256>",
+          "src": "2434:25:2"
         },
         {
           "contract": "EtherTodoList",
           "path": "contracts/EtherTodoList.sol",
           "label": "totalLists",
-          "astId": 273,
+          "astId": 298,
           "type": "t_uint256",
-          "src": "724:25:3"
+          "src": "752:25:3"
         },
         {
           "contract": "EtherTodoList",
           "path": "contracts/EtherTodoList.sol",
           "label": "listIds",
-          "astId": 276,
+          "astId": 301,
           "type": "t_array:dyn<t_uint256>",
-          "src": "755:24:3"
+          "src": "783:24:3"
         },
         {
           "contract": "EtherTodoList",
           "path": "contracts/EtherTodoList.sol",
           "label": "lists",
-          "astId": 280,
+          "astId": 305,
           "type": "t_mapping<t_struct<EtherTodoList.List>>",
-          "src": "785:37:3"
+          "src": "813:37:3"
         }
       ],
       "warnings": {
@@ -241,42 +256,31 @@
         "hasSelfDestruct": false,
         "hasDelegateCall": false,
         "hasInitialValuesInDeclarations": false,
-        "uninitializedBaseContracts": [],
-        "storageUncheckedVars": [
-          {
-            "contract": "EtherTodoList",
-            "path": "contracts/EtherTodoList.sol",
-            "label": "lists",
-            "astId": 280,
-            "type": "t_mapping<t_struct<EtherTodoList.List>>",
-            "src": "785:37:3"
-          }
-        ],
-        "storageDiff": []
+        "uninitializedBaseContracts": []
       }
     }
   },
   "solidityLibs": {},
   "proxies": {
-    "etherTodoList/EtherTodoList": [
+    "EtherTodoList/EtherTodoList": [
       {
-        "address": "0x192e967440eD287bD9BD02411834a62e74d25B0A",
-        "version": "1.0.0",
-        "implementation": "0x8EB2Df04BD8c835f1957BE85B412bc7E16B6B1e9",
-        "admin": "0x44BE216714c77E5947D3fe23D98cebfAc149BAa2",
+        "address": "0x86E59F112d3b947c1729Eecb09aa53f66D8a78F2",
+        "version": "0.0.1",
+        "implementation": "0x0ABc490E3453a4b9352845a03b6151b6aFBCe6Db",
+        "admin": "0xEE50451B3A570478AB3c190a45e6f33b653919f1",
         "kind": "Upgradeable"
       }
     ]
   },
   "manifestVersion": "2.2",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "dependencies": {
     "@openzeppelin/contracts-ethereum-package": {
       "package": "0x2a9e7B63514438906A83a1e320dBBD814D417002",
-      "version": "2.5.0"
+      "version": "3.0.0"
     }
   },
   "proxyAdmin": {
-    "address": "0x44BE216714c77E5947D3fe23D98cebfAc149BAa2"
+    "address": "0xEE50451B3A570478AB3c190a45e6f33b653919f1"
   }
 }

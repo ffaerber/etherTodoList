@@ -1,4 +1,6 @@
-pragma solidity ^0.5.0;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.6.4;
+
 
 library Validate {
     function title(string memory str) internal pure returns (bool) {
@@ -18,5 +20,4 @@ library Validate {
         }
         return true;
     }
-
 }
